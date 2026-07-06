@@ -15,16 +15,10 @@ Arcade Vault — online gaming platform where users compete for the highest poin
 - **ESLint 9** flat config (`eslint.config.mjs`)
 - Path alias: `@/*` → project root
 
-## Commands
 
-```bash
-npm run dev      # dev server
-npm run build    # production build
-npm run start    # serve production build
-npm run lint     # ESLint
-```
+## Skills
 
-No test runner is configured.
+Always use /frontend-design to build user interfaces.
 
 ## Architecture
 
