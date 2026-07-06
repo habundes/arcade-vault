@@ -3,7 +3,7 @@
 | Campo | Valor |
 |---|---|
 | **Spec** | `01-mvp-visual-pantallas` |
-| **Estado** | `Approved` |
+| **Estado** | `Implemented` |
 | **Fecha** | 2026-07-06 |
 | **Dependencias** | Ninguna (primera spec del proyecto) |
 | **Objetivo (una frase)** | Portar las 5 pantallas de `references/templates/` a Next.js 16 App Router como MVP puramente visual, con datos ficticios en `app/data` y sin lógica de juego real. |
