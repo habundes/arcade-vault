@@ -46,7 +46,7 @@ export default function HallOfFamePage() {
           <div className="pixel" style={{ fontSize: 9, color: "var(--gold)", letterSpacing: "0.18em" }}>
             CAMPEÓN
           </div>
-          <div className="rank-num" style={{ fontSize: 36, marginTop: 4 }}>
+          <div className="rank-num" style={{ fontSize: 36, marginTop: 16 }}>
             01
           </div>
           <div className="name">{rows[0].name}</div>

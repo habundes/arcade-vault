@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
-import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "./providers/auth-provider";
 import Nav from "@/components/Nav";
 
-const pressStart2P = Press_Start_2P({
+const pressStart2P = localFont({
+  src: "./fonts/PressStart2P-Regular.ttf",
   weight: "400",
-  subsets: ["latin"],
   variable: "--font-pixel",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const jetbrainsMono = localFont({
+  src: [
+    { path: "./fonts/JetBrainsMono-VariableFont_wght.ttf", style: "normal" },
+    { path: "./fonts/JetBrainsMono-Italic-VariableFont_wght.ttf", style: "italic" },
+  ],
   variable: "--font-mono",
   display: "swap",
 });
