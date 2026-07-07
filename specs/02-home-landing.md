@@ -96,18 +96,18 @@ Cada paso deja la app compilando y navegable.
 
 ## 4 · Criterios de aceptación
 
-- [ ] `npm run build` y `npm run lint` terminan sin errores.
-- [ ] `/` muestra la landing (hero, feature-grid, mini-rail, stats, actividad, precios/FAQ, CTA final), **no** la Biblioteca.
-- [ ] `/games` muestra la Biblioteca completa (buscador filtra por nombre, chips por categoría, mensaje "NO HAY RESULTADOS", tarjetas con tilt y navegación al detalle).
-- [ ] **Hero:** botón "EXPLORAR JUEGOS" va a `/games` y "CREAR CUENTA" a `/auth`.
-- [ ] **Mini-rail:** muestra 6 juegos de `GAMES`; hacer click en uno abre `/juego/[id]`; "VER TODOS LOS JUEGOS" va a `/games`.
-- [ ] **Actividad en vivo:** el ticker lista las 7 filas de `RECENT_SCORES` (jugador, juego, puntuación, tiempo) y el top lista las 5 de `TOP_TODAY`; ambos provienen de `app/data/activity.ts` (derivados de `PLAYERS`/`GAMES`/`seededScores`); "VER SALÓN" va a `/salon`.
-- [ ] **Reveal:** las secciones marcadas `reveal` aparecen al hacer scroll (clase `in` añadida por IntersectionObserver); no hay error de hidratación en consola.
-- [ ] **CTAs de precios/FAQ y final:** "EMPEZAR GRATIS" → `/auth`, "INSERTAR MONEDA" → `/games`.
-- [ ] **Nav:** 4 links (Inicio `/`, Biblioteca `/games`, Salón `/salon`, Acerca de `/about`); el logo lleva a `/`; el link activo se resalta según la ruta (Biblioteca activa en `/games`, `/juego`, `/jugar`); el menú móvil replica los 4 links.
-- [ ] **Back-links:** desde `/juego/[id]` y `/jugar/[id]`, los enlaces de "volver"/CTA a la biblioteca caen en `/games` (no en `/`).
-- [ ] `/about` renderiza un stub "próximamente" sin 404.
-- [ ] El home coincide visualmente con `references/templates/home-about/home.jsx` (neón, siluetas, animaciones) y funciona en viewport angosto.
+- [x] `npm run build` y `npm run lint` terminan sin errores.
+- [x] `/` muestra la landing (hero, feature-grid, mini-rail, stats, actividad, precios/FAQ, CTA final), **no** la Biblioteca.
+- [x] `/games` muestra la Biblioteca completa (buscador filtra por nombre, chips por categoría, mensaje "NO HAY RESULTADOS", tarjetas con tilt y navegación al detalle).
+- [x] **Hero:** botón "EXPLORAR JUEGOS" va a `/games` y "CREAR CUENTA" a `/auth`.
+- [x] **Mini-rail:** muestra 6 juegos de `GAMES`; hacer click en uno abre `/juego/[id]`; "VER TODOS LOS JUEGOS" va a `/games`.
+- [x] **Actividad en vivo:** el ticker lista las 7 filas de `RECENT_SCORES` (jugador, juego, puntuación, tiempo) y el top lista las 5 de `TOP_TODAY`; ambos provienen de `app/data/activity.ts` (derivados de `PLAYERS`/`GAMES`/`seededScores`); "VER SALÓN" va a `/salon`.
+- [x] **Reveal:** las secciones marcadas `reveal` aparecen al hacer scroll (clase `in` añadida por IntersectionObserver); no hay error de hidratación en consola.
+- [x] **CTAs de precios/FAQ y final:** "EMPEZAR GRATIS" → `/auth`, "INSERTAR MONEDA" → `/games`.
+- [x] **Nav:** 4 links (Inicio `/`, Biblioteca `/games`, Salón `/salon`, Acerca de `/about`); el logo lleva a `/`; el link activo se resalta según la ruta (Biblioteca activa en `/games`, `/juego`, `/jugar`); el menú móvil replica los 4 links.
+- [x] **Back-links:** desde `/juego/[id]` y `/jugar/[id]`, los enlaces de "volver"/CTA a la biblioteca caen en `/games` (no en `/`).
+- [x] `/about` renderiza un stub "próximamente" sin 404.
+- [x] El home coincide visualmente con `references/templates/home-about/home.jsx` (neón, siluetas, animaciones) y funciona en viewport angosto.
 
 ---
 
