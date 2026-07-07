@@ -99,7 +99,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ===== app frame ===== */
 #root { position: relative; z-index: 2; display: flex; flex-direction: column; min-height: 100%; }
-.av-main { flex: 1; }
+.av-main { flex: 1; position: relative; isolation: isolate; }
 
 /* ===== pixel + neon text ===== */
 .pixel { font-family: var(--pixel); letter-spacing: 0.04em; line-height: 1.25; text-transform: uppercase; }
@@ -307,6 +307,8 @@ a { color: inherit; text-decoration: none; }
 
 .av-chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .chip {
+  position: relative;
+  transform: translateZ(0);
   padding: 12px 14px;
   font-family: var(--pixel);
   font-size: 9px;
@@ -872,6 +874,7 @@ a { color: inherit; text-decoration: none; }
 .podium-slot.bronze { border-color: var(--bronze); }
 .podium-slot .rank-num {
   font-family: var(--pixel); font-size: 28px;
+  line-height: 1;
   text-shadow: 0 0 12px currentColor;
 }
 .podium-slot.gold .rank-num { color: var(--gold); }
@@ -932,7 +935,7 @@ a { color: inherit; text-decoration: none; }
 /* misc */
 .divider { height: 1px; background: var(--line); margin: 8px 0; }
 .fade-in { animation: fadeIn 240ms ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .slide-in { animation: slideIn 260ms ease-out; }
 @keyframes slideIn { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
 
