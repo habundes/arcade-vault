@@ -3,7 +3,7 @@
 | Campo | Valor |
 |---|---|
 | **Spec** | `03-about-contact` |
-| **Estado** | `Approved` |
+| **Estado** | `Implemented` |
 | **Fecha** | 2026-07-07 |
 | **Dependencias** | SPEC 01 (MVP visual — pantallas), SPEC 02 (Home — reemplaza el stub `/about`) |
 | **Objetivo (una frase)** | Portar la página de `references/templates/home-about/about.jsx` a `/about`, reemplazando el stub, con la sección Acerca de (misión + 3 highlights) y un formulario de Contacto client-only decorativo que muestra una terminal de éxito falsa. |
