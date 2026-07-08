@@ -3,13 +3,12 @@
 | Campo                    | Valor                                                                                                                                                                                         |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `04-integracion-supabase`                                                                                                                                                                     |
-| **Estado**               | `Approved`                                                                                                                                                                                       |
+| **Estado**               | `Implementado`                                                                                                                                                                                |
 | **Fecha**                | 2026-07-08                                                                                                                                                                                    |
 | **Dependencias**         | Ninguna (base transversal; specs posteriores de Auth/Datos dependerán de ésta)                                                                                                                |
 | **Objetivo (una frase)** | Cablear Supabase en la app (clientes browser + server con `@supabase/ssr`, middleware de sesión y tipos de DB generados) dejando la conexión verificable, sin tocar auth ni datos existentes. |
 
 ---go
-
 
 **Nota de alcance:** esta spec es solo _fundación_. No implementa login real, ni migra `GAMES`/`PLAYERS`/puntuaciones, ni cambia el Salón. Real-time y Edge Functions quedan registrados como necesidades futuras (specs propias).
 
@@ -82,15 +81,15 @@ Cada paso deja la app compilando y navegable.
 
 ## 4 · Criterios de aceptación
 
-- [ ] `npm run build` y `npm run lint` terminan sin errores.
-- [ ] Existe `lib/supabase/database.types.ts` exportando `Database`, generado por el MCP (no editado a mano).
-- [ ] Existe `lib/supabase/client.ts` con `createBrowserClient<Database>`, tipado, leyendo `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
-- [ ] Existe `lib/supabase/server.ts` con `createServerClient<Database>` usando `cookies()` de `next/headers` (handlers `getAll`/`setAll`).
-- [ ] Existe `middleware.ts` en la raíz que refresca la sesión y **no** provoca loops de redirección; su `matcher` excluye estáticos.
-- [ ] `/health-supabase` renderiza "✅ CONEXIÓN OK — sin sesión" (sesión `null`) sin lanzar excepción.
-- [ ] Ambos clientes están tipados como `SupabaseClient<Database>`.
-- [ ] Ningún secreto no-`NEXT_PUBLIC_*` aparece en el bundle client.
-- [ ] `auth-provider.tsx`, `app/data/*`, Salón y "Actividad en vivo" quedan **sin cambios**.
+- [x] `npm run build` y `npm run lint` terminan sin errores.
+- [x] Existe `lib/supabase/database.types.ts` exportando `Database`, generado por el MCP (no editado a mano).
+- [x] Existe `lib/supabase/client.ts` con `createBrowserClient<Database>`, tipado, leyendo `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+- [x] Existe `lib/supabase/server.ts` con `createServerClient<Database>` usando `cookies()` de `next/headers` (handlers `getAll`/`setAll`).
+- [~] ~~Existe `middleware.ts` en la raíz que refresca la sesión...~~ — fuera de alcance final; excluido de la implementación (ver nota abajo).
+- [x] `/health-supabase` renderiza "✅ CONEXIÓN OK — sin sesión" (sesión `null`) sin lanzar excepción.
+- [x] Ambos clientes están tipados como `SupabaseClient<Database>`.
+- [x] Ningún secreto no-`NEXT_PUBLIC_*` aparece en el bundle client.
+- [x] `auth-provider.tsx`, `app/data/*`, Salón y "Actividad en vivo" quedan **sin cambios**.
 - [ ] La ruta `/health-supabase` está comentada como temporal/borrable.
 
 ---
