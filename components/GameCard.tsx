@@ -2,9 +2,9 @@
 
 import { useRef, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
-import type { Game } from "@/app/data/types";
+import type { GameRow } from "@/lib/supabase/queries";
 
-export default function GameCard({ game }: { game: Game }) {
+export default function GameCard({ game }: { game: GameRow }) {
   const tiltRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -41,14 +41,14 @@ export default function GameCard({ game }: { game: Game }) {
         <div className="title">{game.title}</div>
         <div className="desc">{game.short}</div>
         <div className="row">
-          <div className="score-badge">
-            <span>MEJOR PUNTUACIÓN</span>
-            <b>{game.best.toLocaleString("es-ES")}</b>
-          </div>
           <button
             className={
               "btn " +
-              (game.color === "magenta" ? "magenta" : game.color === "yellow" ? "yellow" : "")
+              (game.color === "magenta"
+                ? "magenta"
+                : game.color === "yellow"
+                  ? "yellow"
+                  : "")
             }
             onClick={(e) => {
               e.stopPropagation();

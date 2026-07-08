@@ -1,6 +1,14 @@
 export type GameCategory = "ARCADE" | "PUZZLE" | "SHOOTER" | "VERSUS";
 export type GameColor = "cyan" | "magenta" | "yellow" | "green";
 
+export const CATEGORIES = [
+  "TODOS",
+  "ARCADE",
+  "PUZZLE",
+  "SHOOTER",
+  "VERSUS",
+] as const;
+
 export interface Game {
   id: string; // slug, ej. "bloque-buster"
   title: string;
