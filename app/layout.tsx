@@ -14,7 +14,10 @@ const pressStart2P = localFont({
 const jetbrainsMono = localFont({
   src: [
     { path: "./fonts/JetBrainsMono-VariableFont_wght.ttf", style: "normal" },
-    { path: "./fonts/JetBrainsMono-Italic-VariableFont_wght.ttf", style: "italic" },
+    {
+      path: "./fonts/JetBrainsMono-Italic-VariableFont_wght.ttf",
+      style: "italic",
+    },
   ],
   variable: "--font-mono",
   display: "swap",
