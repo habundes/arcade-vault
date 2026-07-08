@@ -1,5 +1,4 @@
 // Generado por el MCP de Supabase (generate_typescript_types).
-// Con 0 tablas el tipo sale casi vacío; se re-genera al crear tablas.
 export type Json =
   | string
   | number
@@ -16,7 +15,68 @@ export type Database = {
   };
   public: {
     Tables: {
-      [_ in never]: never;
+      games: {
+        Row: {
+          cat: string;
+          color: string;
+          cover: string;
+          id: string;
+          long_desc: string;
+          short: string;
+          title: string;
+        };
+        Insert: {
+          cat: string;
+          color: string;
+          cover: string;
+          id: string;
+          long_desc: string;
+          short: string;
+          title: string;
+        };
+        Update: {
+          cat?: string;
+          color?: string;
+          cover?: string;
+          id?: string;
+          long_desc?: string;
+          short?: string;
+          title?: string;
+        };
+        Relationships: [];
+      };
+      scores: {
+        Row: {
+          game_id: string;
+          id: string;
+          played_at: string;
+          player_name: string;
+          score: number;
+        };
+        Insert: {
+          game_id: string;
+          id?: string;
+          played_at?: string;
+          player_name: string;
+          score: number;
+        };
+        Update: {
+          game_id?: string;
+          id?: string;
+          played_at?: string;
+          player_name?: string;
+          score?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "scores_game_id_fkey";
+            columns: ["game_id"];
+            isOneToOne: false;
+            referencedRelation: "games";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
