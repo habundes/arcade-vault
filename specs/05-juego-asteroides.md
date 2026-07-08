@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                                                                                                                                                              |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `05-juego-asteroides`                                                                                                                                                                                                                                                              |
-| **Estado**               | `Approved`                                                                                                                                                                                                                                                                            |
+| **Estado**               | `Implementado`                                                                                                                                                                                                                                                                     |
 | **Fecha**                | 2026-07-08                                                                                                                                                                                                                                                                         |
 | **Dependencias**         | SPEC 01 (MVP visual — pantallas: catálogo, detalle, reproductor placeholder)                                                                                                                                                                                                       |
 | **Objetivo (una frase)** | Portar el juego Asteroids de `references/started-games/02-asteroids/` a un componente canvas de React, añadirlo al catálogo como nuevo juego "asteroides" y conectarlo al reproductor (`/jugar/asteroides`) con HUD real (score/vidas/nivel) y controles de pausa/fin funcionales. |
@@ -155,19 +155,19 @@ Cada paso deja la app compilando y navegable.
 
 ## 4 · Criterios de aceptación
 
-- [ ] `npm run build` y `npm run lint` terminan sin errores.
-- [ ] `/games` muestra la tarjeta "ASTEROIDES" (9 juegos en total) con el cover `.cover-asteroides` y botón cyan; `/juego/asteroides` renderiza el detalle genérico (portada, tags, stat-strip, leaderboard) sin errores.
-- [ ] `/jugar/asteroides` renderiza el canvas del juego (no la arena decorativa genérica) dentro de la pantalla CRT.
-- [ ] **Controles:** `←`/`→` rotan la nave, `↑` propulsa (con llama visible), `Espacio` dispara; las flechas y espacio no hacen scroll de la página mientras se juega.
-- [ ] **Física del juego:** los asteroides grandes se parten en medianos y estos en pequeños al ser destruidos por una bala; los pequeños desaparecen sin dividirse; todo envuelve toroidalmente los bordes del canvas.
-- [ ] **Power-up:** aparece ocasionalmente un power-up de disparo triple tras destruir asteroides; recogerlo activa disparo triple temporal.
-- [ ] **HUD real:** el HUD externo (arriba del CRT) muestra score, vidas y nivel actualizados en vivo desde el motor del juego — no valores simulados por timer.
-- [ ] **PAUSA:** congela el juego (nave/asteroides/balas dejan de moverse); REANUDAR lo continúa exactamente donde quedó.
-- [ ] **FIN:** fuerza el fin de partida y abre el modal existente con el score real alcanzado hasta ese momento.
-- [ ] **Pérdida de vida:** al chocar con un asteroide, la nave explota, pierde una vida y reaparece con invencibilidad temporal (parpadeo); a la 3ª vida perdida se abre el modal de fin con el score final.
-- [ ] **JUGAR DE NUEVO:** desde el modal, reinicia una partida nueva (score 0, 3 vidas, nivel 1) sin recargar la página.
-- [ ] Los otros 8 juegos del catálogo (incluido "rocas") siguen usando la arena decorativa y el timer falso, sin cambios de comportamiento.
-- [ ] "GUARDAR PUNTUACIÓN" en el modal sigue siendo decorativo (sin llamadas de red ni persistencia).
+- [x] `npm run build` y `npm run lint` terminan sin errores.
+- [x] `/games` muestra la tarjeta "ASTEROIDES" (9 juegos en total) con el cover `.cover-asteroides` y botón cyan; `/juego/asteroides` renderiza el detalle genérico (portada, tags, stat-strip, leaderboard) sin errores.
+- [x] `/jugar/asteroides` renderiza el canvas del juego (no la arena decorativa genérica) dentro de la pantalla CRT.
+- [x] **Controles:** `←`/`→` rotan la nave, `↑` propulsa (con llama visible), `Espacio` dispara; las flechas y espacio no hacen scroll de la página mientras se juega.
+- [x] **Física del juego:** los asteroides grandes se parten en medianos y estos en pequeños al ser destruidos por una bala; los pequeños desaparecen sin dividirse; todo envuelve toroidalmente los bordes del canvas.
+- [x] **Power-up:** aparece ocasionalmente un power-up de disparo triple tras destruir asteroides; recogerlo activa disparo triple temporal.
+- [x] **HUD real:** el HUD externo (arriba del CRT) muestra score, vidas y nivel actualizados en vivo desde el motor del juego — no valores simulados por timer.
+- [x] **PAUSA:** congela el juego (nave/asteroides/balas dejan de moverse); REANUDAR lo continúa exactamente donde quedó.
+- [x] **FIN:** fuerza el fin de partida y abre el modal existente con el score real alcanzado hasta ese momento.
+- [x] **Pérdida de vida:** al chocar con un asteroide, la nave explota, pierde una vida y reaparece con invencibilidad temporal (parpadeo); a la 3ª vida perdida se abre el modal de fin con el score final.
+- [x] **JUGAR DE NUEVO:** desde el modal, reinicia una partida nueva (score 0, 3 vidas, nivel 1) sin recargar la página.
+- [x] Los otros 8 juegos del catálogo (incluido "rocas") siguen usando la arena decorativa y el timer falso, sin cambios de comportamiento.
+- [x] "GUARDAR PUNTUACIÓN" en el modal sigue siendo decorativo (sin llamadas de red ni persistencia).
 
 ---
 
