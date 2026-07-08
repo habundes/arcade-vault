@@ -89,9 +89,26 @@ export const GAMES: Game[] = [
     best: 24,
     plays: "4.2K",
   },
+  {
+    id: "asteroides",
+    title: "ASTEROIDES",
+    short: "Sobrevive al campo de rocas en gravedad cero.",
+    long: "Nave triangular a la deriva en el vacío. Rota, propulsa y dispara para partir asteroides en fragmentos cada vez más pequeños. Tres vidas, invencibilidad breve al reaparecer, y niveles que escalan sin piedad.",
+    cat: "SHOOTER",
+    cover: "cover-asteroides",
+    color: "cyan",
+    best: 41200,
+    plays: "1",
+  },
 ];
 
-export const CATEGORIES = ["TODOS", "ARCADE", "PUZZLE", "SHOOTER", "VERSUS"] as const;
+export const CATEGORIES = [
+  "TODOS",
+  "ARCADE",
+  "PUZZLE",
+  "SHOOTER",
+  "VERSUS",
+] as const;
 
 export function getGame(id: string): Game | undefined {
   return GAMES.find((game) => game.id === id);
