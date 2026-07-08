@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/app/providers/auth-provider";
-import type { Game } from "@/app/data/types";
+import type { GameRow } from "@/lib/supabase/queries";
 import {
   AsteroidsCanvas,
   type AsteroidsCanvasHandle,
 } from "@/components/games/asteroids/AsteroidsCanvas";
 import type { AsteroidsSnapshot } from "@/components/games/asteroids/engine";
 
-export default function GamePlayer({ game }: { game: Game }) {
+export default function GamePlayer({ game }: { game: GameRow }) {
   const { user } = useAuth();
   const isAsteroids = game.id === "asteroides";
   const asteroidsRef = useRef<AsteroidsCanvasHandle>(null);
