@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                     |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `08-catalogo-tetris`                                                                                                                      |
-| **Estado**               | `Draft`                                                                                                                                   |
+| **Estado**               | `Approved`                                                                                                                                   |
 | **Fecha**                | 2026-07-09                                                                                                                                |
 | **Dependencias**         | SPEC 07 (juego Tetris), SPEC 06 (leaderboard y catálogo en Supabase)                                                                      |
 | **Objetivo (una frase)** | Insertar la fila `tetris` en la tabla `games` de Supabase para que el juego aparezca en el catálogo y su leaderboard funcione end-to-end. |
