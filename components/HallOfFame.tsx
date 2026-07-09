@@ -1,0 +1,146 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import { getTopScores, type GameRow } from "@/lib/supabase/queries";
+import type { ScoreRow } from "@/app/data/types";
+
+export default function HallOfFame({ games }: { games: GameRow[] }) {
+  const [tab, setTab] = useState(games[0].id);
+  const [result, setResult] = useState<{
+    tab: string;
+    rows: ScoreRow[];
+  } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const supabase = createClient();
+    getTopScores(supabase, tab, 12).then((rows) => {
+      if (!cancelled) setResult({ tab, rows });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [tab]);
+
+  const loading = result?.tab !== tab;
+  const rows = loading ? [] : result!.rows;
+
+  return (
+    <div className="av-hall fade-in">
+      <div className="hall-head">
+        <h1>SALÓN DE LA FAMA</h1>
+        <p className="pixel" style={{ fontSize: 10 }}>
+          LOS NOMBRES QUE NUNCA SE BORRAN DE LA PANTALLA
+        </p>
+      </div>
+
+      <div className="hall-tabs">
+        {games.map((g) => (
+          <button
+            key={g.id}
+            className={"chip" + (tab === g.id ? " active" : "")}
+            onClick={() => setTab(g.id)}
+          >
+            {g.title}
+          </button>
+        ))}
+      </div>
+
+      {!loading && rows.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            padding: 80,
+            color: "var(--ink-faint)",
+          }}
+        >
+          Aún sin puntuaciones. ¡Sé el primero!
+        </div>
+      ) : (
+        !loading && (
+          <>
+            <div className="podium">
+              <div className="podium-slot silver">
+                <div className="rank-num">02</div>
+                <div className="name">{rows[1]?.name ?? "—"}</div>
+                <div className="score">
+                  {(rows[1]?.score ?? 0).toLocaleString("es-ES")}
+                </div>
+                <div className="date">{rows[1]?.date ?? "—"}</div>
+              </div>
+              <div className="podium-slot gold">
+                <div
+                  className="pixel"
+                  style={{
+                    fontSize: 9,
+                    color: "var(--gold)",
+                    letterSpacing: "0.18em",
+                  }}
+                >
+                  CAMPEÓN
+                </div>
+                <div
+                  className="rank-num"
+                  style={{ fontSize: 36, marginTop: 16 }}
+                >
+                  01
+                </div>
+                <div className="name">{rows[0]?.name ?? "—"}</div>
+                <div className="score" style={{ fontSize: 20 }}>
+                  {(rows[0]?.score ?? 0).toLocaleString("es-ES")}
+                </div>
+                <div className="date">{rows[0]?.date ?? "—"}</div>
+              </div>
+              <div className="podium-slot bronze">
+                <div className="rank-num">03</div>
+                <div className="name">{rows[2]?.name ?? "—"}</div>
+                <div className="score">
+                  {(rows[2]?.score ?? 0).toLocaleString("es-ES")}
+                </div>
+                <div className="date">{rows[2]?.date ?? "—"}</div>
+              </div>
+            </div>
+
+            <div className="hall-table">
+              <div className="th">
+                <div>RANGO</div>
+                <div>JUGADOR</div>
+                <div>PUNTUACIÓN</div>
+                <div>FECHA</div>
+              </div>
+              {rows.map((r, i) => (
+                <div
+                  key={r.name + i}
+                  className={
+                    "tr" +
+                    (i === 0
+                      ? " top1"
+                      : i === 1
+                        ? " top2"
+                        : i === 2
+                          ? " top3"
+                          : "")
+                  }
+                  style={{ animationDelay: `${i * 50}ms` }}
+                >
+                  <div className="rk">#{String(r.rank).padStart(2, "0")}</div>
+                  <div className="pl">{r.name}</div>
+                  <div className="sc">{r.score.toLocaleString("es-ES")}</div>
+                  <div className="dt">{r.date}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )
+      )}
+
+      <div style={{ textAlign: "center", marginTop: 32 }}>
+        <Link href="/games" className="btn lg">
+          VOLVER A LA BIBLIOTECA
+        </Link>
+      </div>
+    </div>
+  );
+}
