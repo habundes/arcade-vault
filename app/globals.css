@@ -884,6 +884,31 @@ a {
   text-shadow: 0 0 8px var(--cyan);
 }
 
+.cover-tetris {
+  background: linear-gradient(160deg, #f9a825 0%, #f57f17 60%, #e65100 100%);
+}
+.cover-tetris::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+}
+.cover-tetris::before {
+  content: "⬛";
+  position: absolute;
+  left: 44%;
+  top: 42%;
+  font-size: 28px;
+  filter: brightness(0) saturate(100%) invert(1) sepia(1) saturate(3)
+    hue-rotate(5deg);
+  opacity: 0.7;
+}
+
 /* ===== detail screen ===== */
 .av-detail {
   display: grid;
