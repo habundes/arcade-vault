@@ -10,14 +10,25 @@ import {
   type AsteroidsCanvasHandle,
 } from "@/components/games/asteroids/AsteroidsCanvas";
 import type { AsteroidsSnapshot } from "@/components/games/asteroids/engine";
+import {
+  TetrisCanvas,
+  type TetrisCanvasHandle,
+  type TetrisSnapshot,
+} from "@/components/games/tetris/TetrisCanvas";
 
 export default function GamePlayer({ game }: { game: GameRow }) {
   const { user } = useAuth();
   const isAsteroids = game.id === "asteroides";
+  const isTetris = game.id === "tetris";
+
   const asteroidsRef = useRef<AsteroidsCanvasHandle>(null);
+  const tetrisRef = useRef<TetrisCanvasHandle>(null);
+
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [engineLevel, setEngineLevel] = useState(1);
+  const [tetrisLines, setTetrisLines] = useState(0);
+  const [tetrisResetKey, setTetrisResetKey] = useState(0);
   const [paused, setPaused] = useState(false);
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
@@ -25,16 +36,18 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  const level = isAsteroids ? engineLevel : Math.floor(score / 2500) + 1;
+  const level =
+    isAsteroids || isTetris ? engineLevel : Math.floor(score / 2500) + 1;
 
+  // fake score timer — skipped for engine-driven games
   useEffect(() => {
-    if (isAsteroids || over || paused) return;
+    if (isAsteroids || isTetris || over || paused) return;
     const t = setInterval(
       () => setScore((s) => s + Math.floor(10 + Math.random() * 90)),
       220,
     );
     return () => clearInterval(t);
-  }, [isAsteroids, over, paused]);
+  }, [isAsteroids, isTetris, over, paused]);
 
   const handleAsteroidsSnapshot = useCallback((s: AsteroidsSnapshot) => {
     setScore(s.score);
@@ -43,16 +56,31 @@ export default function GamePlayer({ game }: { game: GameRow }) {
     setOver(s.gameOver);
   }, []);
 
+  const handleTetrisSnapshot = useCallback((s: TetrisSnapshot) => {
+    setScore(s.score);
+    setTetrisLines(s.lines);
+    setEngineLevel(s.level);
+    if (s.gameOver) setOver(true);
+  }, []);
+
   const endGame = () => {
     if (isAsteroids) {
       asteroidsRef.current?.forceGameOver();
+    } else if (isTetris) {
+      tetrisRef.current?.forceGameOver();
+      setOver(true);
     } else {
       setOver(true);
     }
   };
+
   const restart = () => {
     if (isAsteroids) {
       asteroidsRef.current?.reset();
+    } else if (isTetris) {
+      setTetrisResetKey((k) => k + 1);
+      setTetrisLines(0);
+      setEngineLevel(1);
     }
     setScore(0);
     setLives(3);
@@ -90,10 +118,17 @@ export default function GamePlayer({ game }: { game: GameRow }) {
             <div className="l">Puntuación</div>
             <div className="v">{score.toLocaleString("es-ES")}</div>
           </div>
-          <div className="hud-stat lives">
-            <div className="l">Vidas</div>
-            <div className="v">{"♥ ".repeat(lives).trim() || "—"}</div>
-          </div>
+          {isTetris ? (
+            <div className="hud-stat">
+              <div className="l">Líneas</div>
+              <div className="v">{tetrisLines}</div>
+            </div>
+          ) : (
+            <div className="hud-stat lives">
+              <div className="l">Vidas</div>
+              <div className="v">{"♥ ".repeat(lives).trim() || "—"}</div>
+            </div>
+          )}
           <div className="hud-stat level">
             <div className="l">Nivel</div>
             <div className="v">{String(level).padStart(2, "0")}</div>
@@ -120,6 +155,18 @@ export default function GamePlayer({ game }: { game: GameRow }) {
                 ref={asteroidsRef}
                 paused={paused}
                 onSnapshot={handleAsteroidsSnapshot}
+              />
+            </div>
+          ) : isTetris ? (
+            <div
+              className="asteroids-arena"
+              style={{ aspectRatio: "unset", padding: "12px 8px" }}
+            >
+              <TetrisCanvas
+                ref={tetrisRef}
+                paused={paused}
+                resetKey={tetrisResetKey}
+                onSnapshot={handleTetrisSnapshot}
               />
             </div>
           ) : (
