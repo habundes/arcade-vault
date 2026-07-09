@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/app/providers/auth-provider";
-import type { GameRow } from "@/lib/supabase/queries";
+import { createClient } from "@/lib/supabase/client";
+import { insertScore, type GameRow } from "@/lib/supabase/queries";
 import {
   AsteroidsCanvas,
   type AsteroidsCanvasHandle,
@@ -21,6 +22,8 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const level = isAsteroids ? engineLevel : Math.floor(score / 2500) + 1;
 
@@ -56,6 +59,21 @@ export default function GamePlayer({ game }: { game: GameRow }) {
     setPaused(false);
     setOver(false);
     setSaved(false);
+    setSaveError(null);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const supabase = createClient();
+      await insertScore(supabase, game.id, name, score);
+      setSaved(true);
+    } catch {
+      setSaveError("No se pudo guardar la puntuación. Intenta de nuevo.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -159,12 +177,24 @@ export default function GamePlayer({ game }: { game: GameRow }) {
                   }
                   placeholder="TUS INICIALES"
                 />
-                <button className="btn yellow" onClick={() => setSaved(true)}>
-                  GUARDAR PUNTUACIÓN
+                <button
+                  className="btn yellow"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? "GUARDANDO…" : "GUARDAR PUNTUACIÓN"}
                 </button>
               </div>
             ) : (
               <div className="toast-saved">▸ PUNTUACIÓN GUARDADA_</div>
+            )}
+            {saveError && (
+              <div
+                className="mono"
+                style={{ color: "var(--magenta)", fontSize: 11, marginTop: 8 }}
+              >
+                {saveError}
+              </div>
             )}
             <div className="actions">
               <button className="btn" onClick={restart}>
