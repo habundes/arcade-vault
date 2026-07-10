@@ -191,11 +191,14 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
         frameIdRef.current = requestAnimationFrame(loop);
       };
 
+      // Start immediately so cleanup always holds the correct RAF id.
+      // Fruit is drawn as soon as the image resolves.
+      frameIdRef.current = requestAnimationFrame(loop);
+
       const img = new Image();
       img.src = "/games/snake/fruits.png";
       img.onload = () => {
         imgRef.current = img;
-        frameIdRef.current = requestAnimationFrame(loop);
       };
 
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -234,6 +237,7 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
         window.removeEventListener("keydown", handleKeyDown);
         engineRef.current = null;
         imgRef.current = null;
+        img.onload = null;
       };
     }, []);
 

@@ -226,7 +226,14 @@ export default function GamePlayer({ game }: { game: GameRow }) {
             </div>
           ) : isSnake ? (
             <div
-              style={{ aspectRatio: "1/1", width: "100%", margin: "0 auto" }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                height: "100%",
+                aspectRatio: "1/1",
+              }}
             >
               <SnakeCanvas
                 ref={snakeRef}
