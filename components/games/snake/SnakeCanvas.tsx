@@ -134,6 +134,7 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
     const gameOverFiredRef = useRef(false);
     const imgRef = useRef<HTMLImageElement | null>(null);
 
+    // Keep refs in sync every render — no extra effects needed
     pausedRef.current = paused;
     onSnapshotRef.current = onSnapshot;
     onGameOverRef.current = onGameOver;
@@ -142,7 +143,7 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
       forceGameOver: () => engineRef.current?.forceGameOver(),
     }));
 
-    // Mount: create engine, load image, start RAF
+    // Single RAF loop — mount only. Pause is controlled via pausedRef.
     useEffect(() => {
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
@@ -156,16 +157,21 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
       let lastTs: number | null = null;
 
       const loop = (ts: number) => {
-        const dt = lastTs === null ? 0 : ts - lastTs;
-        lastTs = ts;
+        if (!pausedRef.current) {
+          const dt = lastTs === null ? 0 : ts - lastTs;
+          accumulated += dt;
 
-        accumulated += dt;
-        const { tickMs } = engine.getState();
+          const { tickMs } = engine.getState();
+          // Cap accumulated to at most 2 ticks to prevent spiral on tab-switch/lag
+          if (accumulated > tickMs * 2) accumulated = tickMs * 2;
 
-        while (accumulated >= tickMs) {
-          engine.tick();
-          accumulated -= tickMs;
+          while (accumulated >= tickMs) {
+            engine.tick();
+            accumulated -= tickMs;
+          }
         }
+        // Always update lastTs so there's no dt spike on resume
+        lastTs = ts;
 
         const state = engine.getState();
         drawGrid(ctx);
@@ -231,59 +237,7 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
       };
     }, []);
 
-    // Pausa: cancela RAF cuando paused=true, lo reinicia cuando paused=false
-    useEffect(() => {
-      const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (!canvas || !ctx || !engineRef.current) return;
-
-      if (paused) {
-        cancelAnimationFrame(frameIdRef.current);
-        return;
-      }
-
-      // Reiniciar RAF
-      let accumulated = 0;
-      let lastTs: number | null = null;
-
-      const loop = (ts: number) => {
-        const dt = lastTs === null ? 0 : ts - lastTs;
-        lastTs = ts;
-
-        accumulated += dt;
-        const { tickMs } = engineRef.current!.getState();
-
-        while (accumulated >= tickMs) {
-          engineRef.current!.tick();
-          accumulated -= tickMs;
-        }
-
-        const state = engineRef.current!.getState();
-        drawGrid(ctx);
-        drawSnake(ctx, state.snake);
-        if (imgRef.current) {
-          drawFruit(ctx, state.fruit, imgRef.current);
-        }
-
-        const snap = engineRef.current!.snapshot();
-        onSnapshotRef.current(snap);
-
-        if (snap.gameOver && !gameOverFiredRef.current) {
-          gameOverFiredRef.current = true;
-          onGameOverRef.current?.();
-        }
-
-        frameIdRef.current = requestAnimationFrame(loop);
-      };
-
-      frameIdRef.current = requestAnimationFrame(loop);
-
-      return () => {
-        cancelAnimationFrame(frameIdRef.current);
-      };
-    }, [paused]);
-
-    // resetKey: reinicia motor y limpia estado
+    // resetKey: reinicia motor y limpia acumulado
     useEffect(() => {
       const engine = engineRef.current;
       if (!engine) return;
