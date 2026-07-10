@@ -23,6 +23,10 @@ Arcade Vault — online gaming platform where users compete for the highest poin
 - **`/add-game`** — designs the two chained specs needed to add a real game (Spec A: engine + canvas; Spec B: Supabase catalog row). Never writes code, only `.md` files in `specs/`.
 - **`/spec`** + **`/spec-impl`** — Spec Driven Design workflow (from `Klerith/fernando-skills`). Config in `specs/.spec-config.yml`.
 
+## Agents
+
+- **`game-planner`** — subagente que planifica y decide qué juego nuevo encaja con el catálogo. Mantiene memoria de sugerencias en `references/game-suggestion-todo.md` (para no repetir) y entrega una recomendación con el Bloque 1 de `/add-game` pre-respondido. Solo asesora; no escribe código ni specs. Vive en `.claude/agents/game-planner.md`. Usalo cunado el usuario pregunte que juego sigue o pida ideas.
+
 ## Architecture
 
 Uses the **App Router** (`app/` directory). Prefer Server Components by default; add `"use client"` only when interactivity or browser APIs are required.
