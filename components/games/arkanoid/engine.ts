@@ -12,7 +12,7 @@ const BLOCK_COLS = 10;
 const BLOCK_ROWS = 6;
 const BLOCK_W = 64;
 const BLOCK_H = 24;
-const BLOCK_COLORS = [
+export const BLOCK_COLORS = [
   "red",
   "yellow",
   "cyan",
