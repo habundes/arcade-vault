@@ -20,16 +20,23 @@ import {
   type ArkanoidCanvasHandle,
   type ArkanoidSnapshot,
 } from "@/components/games/arkanoid/ArkanoidCanvas";
+import {
+  SnakeCanvas,
+  type SnakeCanvasHandle,
+  type SnakeSnapshot,
+} from "@/components/games/snake/SnakeCanvas";
 
 export default function GamePlayer({ game }: { game: GameRow }) {
   const { user } = useAuth();
   const isAsteroids = game.id === "asteroides";
   const isTetris = game.id === "tetris";
   const isArkanoid = game.id === "arkanoid";
+  const isSnake = game.id === "snake";
 
   const asteroidsRef = useRef<AsteroidsCanvasHandle>(null);
   const tetrisRef = useRef<TetrisCanvasHandle>(null);
   const arkanoidRef = useRef<ArkanoidCanvasHandle>(null);
+  const snakeRef = useRef<SnakeCanvasHandle>(null);
 
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -37,6 +44,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [tetrisLines, setTetrisLines] = useState(0);
   const [tetrisResetKey, setTetrisResetKey] = useState(0);
   const [arkanoidResetKey, setArkanoidResetKey] = useState(0);
+  const [snakeResetKey, setSnakeResetKey] = useState(0);
   const [paused, setPaused] = useState(false);
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
@@ -45,19 +53,20 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [saveError, setSaveError] = useState<string | null>(null);
 
   const level =
-    isAsteroids || isTetris || isArkanoid
+    isAsteroids || isTetris || isArkanoid || isSnake
       ? engineLevel
       : Math.floor(score / 2500) + 1;
 
   // fake score timer — skipped for engine-driven games
   useEffect(() => {
-    if (isAsteroids || isTetris || isArkanoid || over || paused) return;
+    if (isAsteroids || isTetris || isArkanoid || isSnake || over || paused)
+      return;
     const t = setInterval(
       () => setScore((s) => s + Math.floor(10 + Math.random() * 90)),
       220,
     );
     return () => clearInterval(t);
-  }, [isAsteroids, isTetris, isArkanoid, over, paused]);
+  }, [isAsteroids, isTetris, isArkanoid, isSnake, over, paused]);
 
   const handleAsteroidsSnapshot = useCallback((s: AsteroidsSnapshot) => {
     setScore(s.score);
@@ -80,6 +89,13 @@ export default function GamePlayer({ game }: { game: GameRow }) {
     if (s.gameOver) setOver(true);
   }, []);
 
+  const handleSnakeSnapshot = useCallback((s: SnakeSnapshot) => {
+    setScore(s.score);
+    setLives(s.lives);
+    setEngineLevel(s.level);
+    if (s.gameOver) setOver(true);
+  }, []);
+
   const endGame = () => {
     if (isAsteroids) {
       asteroidsRef.current?.forceGameOver();
@@ -88,6 +104,8 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       setOver(true);
     } else if (isArkanoid) {
       arkanoidRef.current?.forceGameOver();
+    } else if (isSnake) {
+      snakeRef.current?.forceGameOver();
     } else {
       setOver(true);
     }
@@ -102,6 +120,9 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       setEngineLevel(1);
     } else if (isArkanoid) {
       setArkanoidResetKey((k) => k + 1);
+      setEngineLevel(1);
+    } else if (isSnake) {
+      setSnakeResetKey((k) => k + 1);
       setEngineLevel(1);
     }
     setScore(0);
@@ -200,6 +221,18 @@ export default function GamePlayer({ game }: { game: GameRow }) {
                 paused={paused}
                 resetKey={arkanoidResetKey}
                 onSnapshot={handleArkanoidSnapshot}
+                onGameOver={() => setOver(true)}
+              />
+            </div>
+          ) : isSnake ? (
+            <div
+              style={{ aspectRatio: "1/1", width: "100%", margin: "0 auto" }}
+            >
+              <SnakeCanvas
+                ref={snakeRef}
+                paused={paused}
+                resetKey={snakeResetKey}
+                onSnapshot={handleSnakeSnapshot}
                 onGameOver={() => setOver(true)}
               />
             </div>
