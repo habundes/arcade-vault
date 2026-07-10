@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                    |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `12-catalogo-snake`                                                                                                                      |
-| **Estado**               | `Draft`                                                                                                                                  |
+| **Estado**               | `Approved`                                                                                                                                  |
 | **Fecha**                | 2026-07-10                                                                                                                               |
 | **Dependencias**         | SPEC 11 (juego Snake), SPEC 06 (leaderboard y catálogo en Supabase)                                                                      |
 | **Objetivo (una frase)** | Insertar la fila `snake` en la tabla `games` de Supabase para que el juego aparezca en el catálogo y su leaderboard funcione end-to-end. |
