@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                       |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `10-catalogo-arkanoid`                                                                                                                      |
-| **Estado**               | `Draft`                                                                                                                                     |
+| **Estado**               | `Approved`                                                                                                                                     |
 | **Fecha**                | 2026-07-09                                                                                                                                  |
 | **Dependencias**         | SPEC 09 (juego Arkanoid), SPEC 06 (leaderboard y catálogo en Supabase)                                                                      |
 | **Objetivo (una frase)** | Insertar la fila `arkanoid` en la tabla `games` de Supabase para que el juego aparezca en el catálogo y su leaderboard funcione end-to-end. |
