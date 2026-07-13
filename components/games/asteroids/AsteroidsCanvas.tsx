@@ -3,11 +3,13 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import {
   createEngine,
+  DEFAULT_SKIN,
   H,
   W,
   type AsteroidsSnapshot,
   type Engine,
   type Keys,
+  type Skin,
 } from "./engine";
 
 const CAPTURED_KEYS = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "Space"]);
@@ -19,17 +21,22 @@ export type AsteroidsCanvasHandle = {
 
 type AsteroidsCanvasProps = {
   paused?: boolean;
+  skin?: Skin;
   onSnapshot?: (snapshot: AsteroidsSnapshot) => void;
 };
 
 export const AsteroidsCanvas = forwardRef<
   AsteroidsCanvasHandle,
   AsteroidsCanvasProps
->(function AsteroidsCanvas({ paused = false, onSnapshot }, ref) {
+>(function AsteroidsCanvas(
+  { paused = false, skin = DEFAULT_SKIN, onSnapshot },
+  ref,
+) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<Engine | null>(null);
   const pausedRef = useRef(paused);
   const onSnapshotRef = useRef(onSnapshot);
+  const initialSkinRef = useRef(skin);
 
   pausedRef.current = paused;
   onSnapshotRef.current = onSnapshot;
@@ -40,11 +47,15 @@ export const AsteroidsCanvas = forwardRef<
   }));
 
   useEffect(() => {
+    engineRef.current?.setSkin(skin);
+  }, [skin]);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const engine = createEngine();
+    const engine = createEngine(initialSkinRef.current);
     engineRef.current = engine;
 
     const keys: Keys = {};
