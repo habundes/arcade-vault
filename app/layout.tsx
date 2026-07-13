@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "./providers/auth-provider";
@@ -26,6 +26,11 @@ const jetbrainsMono = localFont({
 export const metadata: Metadata = {
   title: "Arcade Vault",
   description: "Online gaming platform — compete for the highest score",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
