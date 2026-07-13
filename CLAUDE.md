@@ -26,6 +26,8 @@ Arcade Vault — online gaming platform where users compete for the highest poin
 ## Agents
 
 - **`game-planner`** — subagente que planifica y decide qué juego nuevo encaja con el catálogo. Mantiene memoria de sugerencias en `references/game-suggestion-todo.md` (para no repetir) y entrega una recomendación con el Bloque 1 de `/add-game` pre-respondido. Solo asesora; no escribe código ni specs. Vive en `.claude/agents/game-planner.md`. Usalo cunado el usuario pregunte que juego sigue o pida ideas.
+- **`game-jam`** — subagente que recibe el **tema de un juego** y genera al menos 2 specs completos en `specs/game-jam/[game-id]/`: `spec-A-juego-[game-id].md` (motor + canvas, mismo formato que asteroides/tetris) y `spec-B-catalogo-[game-id].md` (INSERT SQL para Supabase). Si el juego requiere specs adicionales (assets, sonidos) los agrega como `spec-C-...`. Vive en `.claude/agents/game-jam.md`. Úsalo cuando el usuario dé un tema y quiera diseñar los specs de ese juego.
+- **`skin-designer`** — subagente que crea las 3 skins obligatorias (**neon**, **retro** y **clasico**/default) para un juego —**nuevo o existente**— verificando que cada una luzca bien en **modo oscuro**. Para un juego existente puede **leer** su engine/canvas pero **nunca lo modifica**: solo entrega specs. Genera el spec de skins en `specs/skins/spec-skins-[game-id].md` y registra el juego en `references/skin-registry.md`. Solo asesora; escribe únicamente `.md`, nunca código. Vive en `.claude/agents/skin-designer.md`. Úsalo cuando necesites definir las skins de un juego, sea nuevo o ya implementado.
 
 ## Architecture
 

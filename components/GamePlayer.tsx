@@ -9,7 +9,11 @@ import {
   AsteroidsCanvas,
   type AsteroidsCanvasHandle,
 } from "@/components/games/asteroids/AsteroidsCanvas";
-import type { AsteroidsSnapshot } from "@/components/games/asteroids/engine";
+import {
+  DEFAULT_SKIN,
+  type AsteroidsSnapshot,
+  type Skin,
+} from "@/components/games/asteroids/engine";
 import {
   TetrisCanvas,
   type TetrisCanvasHandle,
@@ -25,6 +29,12 @@ import {
   type SnakeCanvasHandle,
   type SnakeSnapshot,
 } from "@/components/games/snake/SnakeCanvas";
+
+const SKIN_LABELS: Record<Skin, string> = {
+  clasico: "CLÁSICO",
+  neon: "NEON",
+  retro: "RETRO",
+};
 
 export default function GamePlayer({ game }: { game: GameRow }) {
   const { user } = useAuth();
@@ -51,6 +61,19 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const skinStorageKey = `av-skin-${game.id}`;
+  const [skin, setSkin] = useState<Skin>(() => {
+    if (typeof window === "undefined") return DEFAULT_SKIN;
+    const stored = window.localStorage.getItem(skinStorageKey);
+    return stored === "clasico" || stored === "neon" || stored === "retro"
+      ? stored
+      : DEFAULT_SKIN;
+  });
+
+  const handleSkinChange = (next: Skin) => {
+    setSkin(next);
+    localStorage.setItem(skinStorageKey, next);
+  };
 
   const level =
     isAsteroids || isTetris || isArkanoid || isSnake
@@ -178,6 +201,20 @@ export default function GamePlayer({ game }: { game: GameRow }) {
           </div>
         </div>
         <div className="hud-actions">
+          {isAsteroids && (
+            <select
+              className="skin-select"
+              value={skin}
+              onChange={(e) => handleSkinChange(e.target.value as Skin)}
+              aria-label="Skin del juego"
+            >
+              {(Object.keys(SKIN_LABELS) as Skin[]).map((s) => (
+                <option key={s} value={s}>
+                  {SKIN_LABELS[s]}
+                </option>
+              ))}
+            </select>
+          )}
           <button className="btn yellow" onClick={() => setPaused((p) => !p)}>
             {paused ? "REANUDAR" : "PAUSA"}
           </button>
@@ -197,6 +234,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
               <AsteroidsCanvas
                 ref={asteroidsRef}
                 paused={paused}
+                skin={skin}
                 onSnapshot={handleAsteroidsSnapshot}
               />
             </div>
