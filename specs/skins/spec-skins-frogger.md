@@ -3,7 +3,7 @@
 | Campo        | Valor                                                                                                     |
 | ------------ | --------------------------------------------------------------------------------------------------------- |
 | Juego        | `frogger` (carpeta de código: `components/games/frogger/`)                                                |
-| Estado       | Borrador                                                                                                  |
+| Estado       | Approved                                                                                                  |
 | Skins        | `neon`, `retro`, `clasico` (default)                                                                      |
 | Fuente leída | `components/games/frogger/engine.ts`, `specs/game-jam/frogger/spec-A-juego-frogger.md`, `app/globals.css` |
 | Fecha        | 2026-07-14                                                                                                |
@@ -366,7 +366,7 @@ const handleSkinChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 />
 ```
 
-**Clave de persistencia:** `av-skin-frogger`  
+**Clave de persistencia:** `av-skin-frogger`
 **Default cuando no hay nada en localStorage:** `"clasico"`
 
 ### 3d. Scanlines para la skin retro
