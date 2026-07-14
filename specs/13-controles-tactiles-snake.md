@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                                                                    |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `13-controles-tactiles-snake`                                                                                                                                                            |
-| **Estado**               | `Approved`                                                                                                                                                                                  |
+| **Estado**               | `Implemented`                                                                                                                                                                            |
 | **Fecha**                | 2026-07-13                                                                                                                                                                               |
 | **Dependencias**         | SPEC 11 (juego Snake)                                                                                                                                                                    |
 | **Objetivo (una frase)** | Agregar un D-pad táctil reutilizable debajo del canvas de Snake (visible en viewports móviles) para que la serpiente se pueda controlar sin teclado en dispositivos con pantalla táctil. |
