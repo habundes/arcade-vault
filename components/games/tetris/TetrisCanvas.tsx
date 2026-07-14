@@ -165,14 +165,18 @@ export const TetrisCanvas = forwardRef<TetrisCanvasHandle, TetrisCanvasProps>(
             gap: 12,
             alignItems: "flex-start",
             justifyContent: "center",
-            height: "100%",
           }}
         >
           <canvas
             ref={boardRef}
             width={300}
             height={600}
-            style={{ width: "100%", height: "100%", display: "block" }}
+            style={{
+              width: "auto",
+              height: "70vh",
+              maxHeight: "70vh",
+              display: "block",
+            }}
           />
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div

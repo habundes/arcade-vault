@@ -229,7 +229,12 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       </div>
 
       <div className="crt">
-        <div className="crt-screen">
+        <div
+          className="crt-screen"
+          style={
+            isTetris ? { aspectRatio: "unset", height: "auto" } : undefined
+          }
+        >
           {isAsteroids ? (
             <div className="asteroids-arena">
               <AsteroidsCanvas
@@ -242,7 +247,13 @@ export default function GamePlayer({ game }: { game: GameRow }) {
           ) : isTetris ? (
             <div
               className="asteroids-arena"
-              style={{ aspectRatio: "unset", padding: "12px 8px" }}
+              style={{
+                position: "static",
+                aspectRatio: "unset",
+                height: "auto",
+                padding: "12px 8px",
+                flexDirection: "column",
+              }}
             >
               <TetrisCanvas
                 ref={tetrisRef}
