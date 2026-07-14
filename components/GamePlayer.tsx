@@ -29,6 +29,7 @@ import {
   type SnakeCanvasHandle,
   type SnakeSnapshot,
 } from "@/components/games/snake/SnakeCanvas";
+import { TouchDPad } from "@/components/games/shared/TouchDPad";
 
 const SKIN_LABELS: Record<Skin, string> = {
   clasico: "CLÁSICO",
@@ -320,6 +321,13 @@ export default function GamePlayer({ game }: { game: GameRow }) {
           <span>CARGA · 1MB</span>
         </div>
       </div>
+
+      {isSnake && (
+        <TouchDPad
+          onDirection={(dir) => snakeRef.current?.queueDirection(dir)}
+          disabled={paused || over}
+        />
+      )}
 
       {over && (
         <div className="modal-bd">
