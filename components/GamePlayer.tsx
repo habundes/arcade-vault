@@ -245,7 +245,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
           )}
         </div>
         <div className="hud-actions">
-          {isAsteroids && (
+          {(isAsteroids || isFrogger) && (
             <select
               className="skin-select"
               value={skin}
@@ -339,6 +339,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
               <FroggerCanvas
                 ref={froggerRef}
                 paused={paused}
+                skin={skin}
                 onSnapshot={handleFroggerSnapshot}
               />
             </div>

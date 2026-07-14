@@ -19,6 +19,202 @@ const TURTLE_SUBMERGED_MS = 1500;
 const TURTLE_CYCLE_MS =
   TURTLE_SURFACE_MS + TURTLE_SINK_MS + TURTLE_SUBMERGED_MS;
 
+// ── Skins ─────────────────────────────────────────────────────────────────────
+
+export type Skin = "clasico" | "neon" | "retro";
+
+type FroggerPalette = {
+  bgRiver: string;
+  bgGrass: string;
+  bgRoad: string;
+
+  laneMarker: string;
+  riverGlow: string;
+  scanlines: boolean;
+
+  vehicleRow7: string;
+  vehicleRow8: string;
+  vehicleRow9: string;
+  vehicleRow10: string;
+  vehicleRow11: string;
+  vehicleRow12: string;
+  vehicleRow13: string;
+  vehicleHeadlight: string;
+
+  logFill: string;
+  logBorder: string;
+  logGrain: string;
+
+  turtleShell: string;
+  turtleBorder: string;
+  turtlePattern: string;
+  turtleHead: string;
+  turtleRipple: string;
+
+  baseEmptyBorder: string;
+  baseLilypadOuter: string;
+  baseLilypadInner: string;
+  baseFrogMini: string;
+  baseFrogEyes: string;
+
+  frogBody: string;
+  frogEyes: string;
+  frogPupils: string;
+  frogGlow: string | null;
+
+  timerBg: string;
+  timerFull: string;
+  timerLow: string;
+
+  overlayBg: string;
+  overlayText: string;
+};
+
+export const FROGGER_PALETTES: Record<Skin, FroggerPalette> = {
+  clasico: {
+    bgRiver: "#000000",
+    bgGrass: "#000000",
+    bgRoad: "#000000",
+
+    laneMarker: "rgba(255,255,255,0.25)",
+    riverGlow: "rgba(255,255,255,0.12)",
+    scanlines: false,
+
+    vehicleRow7: "#ffffff",
+    vehicleRow8: "#dddddd",
+    vehicleRow9: "#ffffff",
+    vehicleRow10: "#cccccc",
+    vehicleRow11: "#ffffff",
+    vehicleRow12: "#dddddd",
+    vehicleRow13: "#ffffff",
+    vehicleHeadlight: "#888888",
+
+    logFill: "#333333",
+    logBorder: "#999999",
+    logGrain: "#555555",
+
+    turtleShell: "#cccccc",
+    turtleBorder: "#aaaaaa",
+    turtlePattern: "#888888",
+    turtleHead: "#bbbbbb",
+    turtleRipple: "rgba(255,255,255,0.08)",
+
+    baseEmptyBorder: "#555555",
+    baseLilypadOuter: "#111111",
+    baseLilypadInner: "#ffffff",
+    baseFrogMini: "#cccccc",
+    baseFrogEyes: "#888888",
+
+    frogBody: "#ffffff",
+    frogEyes: "#aaaaaa",
+    frogPupils: "#000000",
+    frogGlow: null,
+
+    timerBg: "#222222",
+    timerFull: "#ffffff",
+    timerLow: "#aaaaaa",
+
+    overlayBg: "rgba(0,0,0,0.80)",
+    overlayText: "#ffffff",
+  },
+
+  neon: {
+    bgRiver: "#001428",
+    bgGrass: "#0a1f0a",
+    bgRoad: "#1a0028",
+
+    laneMarker: "rgba(255,255,255,0.08)",
+    riverGlow: "rgba(0,204,255,0.12)",
+    scanlines: false,
+
+    vehicleRow7: "#ff006e",
+    vehicleRow8: "#00f5ff",
+    vehicleRow9: "#f5ff00",
+    vehicleRow10: "#ff8800",
+    vehicleRow11: "#ff44ff",
+    vehicleRow12: "#44ffff",
+    vehicleRow13: "#f5ff00",
+    vehicleHeadlight: "#ffffff",
+
+    logFill: "#5a3300",
+    logBorder: "#8b5e27",
+    logGrain: "#7a4f1a",
+
+    turtleShell: "#00ff88",
+    turtleBorder: "#00cc55",
+    turtlePattern: "#00aa44",
+    turtleHead: "#2ac46a",
+    turtleRipple: "rgba(0,204,255,0.15)",
+
+    baseEmptyBorder: "#444444",
+    baseLilypadOuter: "#003a00",
+    baseLilypadInner: "#00ff44",
+    baseFrogMini: "#00ff88",
+    baseFrogEyes: "#ff006e",
+
+    frogBody: "#00ff88",
+    frogEyes: "#ffffff",
+    frogPupils: "#000000",
+    frogGlow: "rgba(0,255,136,0.45)",
+
+    timerBg: "#111111",
+    timerFull: "#00f5ff",
+    timerLow: "#ff006e",
+
+    overlayBg: "rgba(0,0,0,0.65)",
+    overlayText: "#00f5ff",
+  },
+
+  retro: {
+    bgRiver: "#0a0800",
+    bgGrass: "#0d0d00",
+    bgRoad: "#0d0500",
+
+    laneMarker: "rgba(255,176,0,0.20)",
+    riverGlow: "rgba(255,176,0,0.15)",
+    scanlines: true,
+
+    vehicleRow7: "#ffb000",
+    vehicleRow8: "#ff7b00",
+    vehicleRow9: "#ffd27f",
+    vehicleRow10: "#ff9500",
+    vehicleRow11: "#ffb000",
+    vehicleRow12: "#ff7b00",
+    vehicleRow13: "#ffd27f",
+    vehicleHeadlight: "#ffe4a0",
+
+    logFill: "#3a1a00",
+    logBorder: "#7a4000",
+    logGrain: "#5a3000",
+
+    turtleShell: "#ffb000",
+    turtleBorder: "#ff7b00",
+    turtlePattern: "#cc6600",
+    turtleHead: "#ff9500",
+    turtleRipple: "rgba(255,176,0,0.12)",
+
+    baseEmptyBorder: "#664400",
+    baseLilypadOuter: "#1a0a00",
+    baseLilypadInner: "#ffb000",
+    baseFrogMini: "#ffd27f",
+    baseFrogEyes: "#ff7b00",
+
+    frogBody: "#ffb000",
+    frogEyes: "#ffe4a0",
+    frogPupils: "#000000",
+    frogGlow: null,
+
+    timerBg: "#1a0a00",
+    timerFull: "#ffb000",
+    timerLow: "#ff7b00",
+
+    overlayBg: "rgba(0,0,0,0.80)",
+    overlayText: "#ffb000",
+  },
+};
+
+// ── Game types ────────────────────────────────────────────────────────────────
+
 export type FroggerSnapshot = {
   score: number;
   lives: number;
@@ -115,7 +311,11 @@ const RIVER_LANE_CONFIG = [
   },
 ];
 
-export function createEngine() {
+// ── Engine ────────────────────────────────────────────────────────────────────
+
+export function createEngine(skin: Skin = "clasico") {
+  let activeSkin: Skin = skin;
+
   const frog: Frog = {
     col: 5,
     row: SAFE_ROW,
@@ -138,6 +338,10 @@ export function createEngine() {
   let phase: Phase = "playing";
   let levelCompleteTimer = 0;
   let minRowReached = SAFE_ROW;
+
+  function setSkin(s: Skin) {
+    activeSkin = s;
+  }
 
   function generateVehicles(baseSpeed: number) {
     vehicles = [];
@@ -265,18 +469,15 @@ export function createEngine() {
           respawnFrog();
         }
       }
-      // Still move vehicles/platforms so background stays alive
       moveObjects(dtMs);
       return;
     }
 
     if (phase === "gameover") return;
 
-    // phase === "playing"
     moveObjects(dtMs);
     updateTurtles(dtMs);
 
-    // Drag frog on river platforms
     if (isInRiverRow(frog.row) && frog.alive) {
       const plat = findPlatformUnder();
       if (plat) {
@@ -289,7 +490,6 @@ export function createEngine() {
       }
     }
 
-    // Countdown timer
     timeLeft -= dtMs / 1000;
     if (timeLeft <= 0) {
       timeLeft = 0;
@@ -297,7 +497,6 @@ export function createEngine() {
       return;
     }
 
-    // Car collision (road rows)
     if (isInRoadRow(frog.row) && frog.alive) {
       const frogLeft = frog.col * CELL + CELL * 0.15;
       const frogRight = frogLeft + CELL * 0.7;
@@ -312,7 +511,6 @@ export function createEngine() {
       }
     }
 
-    // Water collision (river rows with no platform)
     if (isInRiverRow(frog.row) && frog.alive) {
       const plat = findPlatformUnder();
       if (!plat) {
@@ -325,7 +523,6 @@ export function createEngine() {
       }
     }
 
-    // Home row arrival
     if (frog.row === HOME_ROW && frog.alive) {
       const homeIdx = homes.findIndex((h) => h.col === frog.col);
       if (homeIdx >= 0 && !homes[homeIdx].occupied) {
@@ -338,7 +535,6 @@ export function createEngine() {
         minRowReached = SAFE_ROW;
         checkLevelComplete();
       } else {
-        // Landed in water between bases or on an already-occupied base
         killFrog();
       }
     }
@@ -402,26 +598,26 @@ export function createEngine() {
 
   // ── Draw ─────────────────────────────────────────────────────────────────────
 
-  function drawRowBackground(ctx: CanvasRenderingContext2D) {
+  function drawRowBackground(ctx: CanvasRenderingContext2D, p: FroggerPalette) {
     for (let row = 0; row < ROWS; row++) {
       const y = row * CELL;
       if (row === HOME_ROW) {
-        ctx.fillStyle = "#001428";
+        ctx.fillStyle = p.bgRiver;
       } else if (isInRiverRow(row)) {
-        ctx.fillStyle = "#001428";
+        ctx.fillStyle = p.bgRiver;
       } else if (row === MEDIAN_ROW || row === SAFE_ROW || row === ROWS - 1) {
-        ctx.fillStyle = "#0a1f0a";
+        ctx.fillStyle = p.bgGrass;
       } else if (isInRoadRow(row)) {
-        ctx.fillStyle = "#1a0028";
+        ctx.fillStyle = p.bgRoad;
       } else {
-        ctx.fillStyle = "#0a1f0a";
+        ctx.fillStyle = p.bgGrass;
       }
       ctx.fillRect(0, y, CANVAS_W, CELL);
     }
   }
 
-  function drawLaneMarkers(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "rgba(255,255,255,0.08)";
+  function drawLaneMarkers(ctx: CanvasRenderingContext2D, p: FroggerPalette) {
+    ctx.strokeStyle = p.laneMarker;
     ctx.lineWidth = 1;
     for (const row of ROAD_ROWS) {
       const y = row * CELL;
@@ -430,8 +626,7 @@ export function createEngine() {
       ctx.lineTo(CANVAS_W, y);
       ctx.stroke();
     }
-    // River glow lines
-    ctx.strokeStyle = "rgba(0,204,255,0.12)";
+    ctx.strokeStyle = p.riverGlow;
     for (const row of RIVER_ROWS) {
       const y = row * CELL + CELL / 2;
       ctx.beginPath();
@@ -441,13 +636,12 @@ export function createEngine() {
     }
   }
 
-  function drawHomeBases(ctx: CanvasRenderingContext2D) {
+  function drawHomeBases(ctx: CanvasRenderingContext2D, p: FroggerPalette) {
     for (const base of homes) {
       const x = base.col * CELL;
       const y = HOME_ROW * CELL;
       if (base.occupied) {
-        // Lilypad + mini frog
-        ctx.fillStyle = "#003a00";
+        ctx.fillStyle = p.baseLilypadOuter;
         ctx.beginPath();
         ctx.ellipse(
           x + CELL / 2,
@@ -459,7 +653,7 @@ export function createEngine() {
           Math.PI * 2,
         );
         ctx.fill();
-        ctx.fillStyle = "#00ff44";
+        ctx.fillStyle = p.baseLilypadInner;
         ctx.beginPath();
         ctx.ellipse(
           x + CELL / 2,
@@ -471,12 +665,11 @@ export function createEngine() {
           Math.PI * 2,
         );
         ctx.fill();
-        // Mini frog dot
-        ctx.fillStyle = "#00ff88";
+        ctx.fillStyle = p.baseFrogMini;
         ctx.beginPath();
         ctx.arc(x + CELL / 2, y + CELL / 2, 5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#ff4444";
+        ctx.fillStyle = p.baseFrogEyes;
         ctx.beginPath();
         ctx.arc(x + CELL / 2 - 3, y + CELL / 2 - 3, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -484,52 +677,46 @@ export function createEngine() {
         ctx.arc(x + CELL / 2 + 3, y + CELL / 2 - 3, 2, 0, Math.PI * 2);
         ctx.fill();
       } else {
-        // Empty base outline
-        ctx.strokeStyle = "#444";
+        ctx.strokeStyle = p.baseEmptyBorder;
         ctx.lineWidth = 2;
         ctx.strokeRect(x + 4, y + 4, CELL - 8, CELL - 8);
       }
     }
   }
 
-  function drawPlatforms(ctx: CanvasRenderingContext2D) {
-    for (const p of platforms) {
-      const y = p.row * CELL;
+  function drawPlatforms(ctx: CanvasRenderingContext2D, p: FroggerPalette) {
+    for (const plat of platforms) {
+      const y = plat.row * CELL;
       const isSinking =
-        p.type === "turtle" &&
-        p.submergePhase >= TURTLE_SURFACE_MS &&
-        p.submergePhase < TURTLE_SURFACE_MS + TURTLE_SINK_MS;
+        plat.type === "turtle" &&
+        plat.submergePhase >= TURTLE_SURFACE_MS &&
+        plat.submergePhase < TURTLE_SURFACE_MS + TURTLE_SINK_MS;
 
-      if (p.type === "log") {
-        ctx.fillStyle = "#5a3300";
-        ctx.fillRect(p.x, y + 4, p.widthPx, CELL - 8);
-        ctx.strokeStyle = "#8b5e27";
+      if (plat.type === "log") {
+        ctx.fillStyle = p.logFill;
+        ctx.fillRect(plat.x, y + 4, plat.widthPx, CELL - 8);
+        ctx.strokeStyle = p.logBorder;
         ctx.lineWidth = 2;
-        ctx.strokeRect(p.x, y + 4, p.widthPx, CELL - 8);
-        // Wood grain lines
-        ctx.strokeStyle = "#7a4f1a";
+        ctx.strokeRect(plat.x, y + 4, plat.widthPx, CELL - 8);
+        ctx.strokeStyle = p.logGrain;
         ctx.lineWidth = 1;
-        for (let s = 1; s < p.widthPx / CELL; s++) {
+        for (let s = 1; s < plat.widthPx / CELL; s++) {
           ctx.beginPath();
-          ctx.moveTo(p.x + s * CELL, y + 6);
-          ctx.lineTo(p.x + s * CELL, y + CELL - 6);
+          ctx.moveTo(plat.x + s * CELL, y + 6);
+          ctx.lineTo(plat.x + s * CELL, y + CELL - 6);
           ctx.stroke();
         }
       } else {
-        // Turtle
-        if (p.submerged) {
-          // Submerged: draw water ripple only
-          ctx.fillStyle = "rgba(0,204,255,0.15)";
-          ctx.fillRect(p.x, y + 8, p.widthPx, CELL - 16);
+        if (plat.submerged) {
+          ctx.fillStyle = p.turtleRipple;
+          ctx.fillRect(plat.x, y + 8, plat.widthPx, CELL - 16);
           continue;
         }
         ctx.globalAlpha = isSinking ? 0.4 : 1;
-        // Draw each turtle segment (2-cell wide per turtle)
-        const numTurtles = Math.floor(p.widthPx / (CELL * 2));
+        const numTurtles = Math.floor(plat.widthPx / (CELL * 2));
         for (let t = 0; t < numTurtles; t++) {
-          const tx = p.x + t * CELL * 2;
-          // Shell
-          ctx.fillStyle = "#3aff8a";
+          const tx = plat.x + t * CELL * 2;
+          ctx.fillStyle = p.turtleShell;
           ctx.beginPath();
           ctx.ellipse(
             tx + CELL,
@@ -541,11 +728,10 @@ export function createEngine() {
             Math.PI * 2,
           );
           ctx.fill();
-          ctx.strokeStyle = "#00cc55";
+          ctx.strokeStyle = p.turtleBorder;
           ctx.lineWidth = 1.5;
           ctx.stroke();
-          // Shell pattern lines
-          ctx.strokeStyle = "#00aa44";
+          ctx.strokeStyle = p.turtlePattern;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(tx + CELL, y + CELL / 2 - CELL * 0.35);
@@ -555,8 +741,7 @@ export function createEngine() {
           ctx.moveTo(tx + CELL - CELL * 0.5, y + CELL / 2);
           ctx.lineTo(tx + CELL + CELL * 0.5, y + CELL / 2);
           ctx.stroke();
-          // Head
-          ctx.fillStyle = "#2ac46a";
+          ctx.fillStyle = p.turtleHead;
           ctx.beginPath();
           ctx.arc(tx + CELL * 1.7, y + CELL / 2, 6, 0, Math.PI * 2);
           ctx.fill();
@@ -566,27 +751,37 @@ export function createEngine() {
     }
   }
 
-  function drawVehicles(ctx: CanvasRenderingContext2D) {
+  function drawVehicles(ctx: CanvasRenderingContext2D, p: FroggerPalette) {
+    const rowColorMap: Record<number, string> = {
+      7: p.vehicleRow7,
+      8: p.vehicleRow8,
+      9: p.vehicleRow9,
+      10: p.vehicleRow10,
+      11: p.vehicleRow11,
+      12: p.vehicleRow12,
+      13: p.vehicleRow13,
+    };
+
     for (const v of vehicles) {
       const y = v.row * CELL;
-      // Body
-      ctx.fillStyle = v.colorHex;
+      ctx.fillStyle = rowColorMap[v.row] ?? v.colorHex;
       ctx.fillRect(v.x + 2, y + 6, v.widthPx - 4, CELL - 12);
-      // Black border
       ctx.strokeStyle = "#000";
       ctx.lineWidth = 2;
       ctx.strokeRect(v.x + 2, y + 6, v.widthPx - 4, CELL - 12);
-      // Headlights (white rectangles on leading edge)
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = p.vehicleHeadlight;
       const facingRight = v.speed > 0;
       const lightX = facingRight ? v.x + v.widthPx - 8 : v.x + 2;
       ctx.fillRect(lightX, y + 10, 6, 6);
     }
   }
 
-  function drawFrog(ctx: CanvasRenderingContext2D, ts: number) {
+  function drawFrog(
+    ctx: CanvasRenderingContext2D,
+    p: FroggerPalette,
+    ts: number,
+  ) {
     if (!frog.alive) {
-      // Death blink: alternate alpha every 100ms
       const blinkOn = Math.floor(ts / 100) % 2 === 0;
       if (!blinkOn) return;
     }
@@ -596,12 +791,16 @@ export function createEngine() {
     const margin = 2;
     const size = CELL - margin * 2;
 
-    // Body
-    ctx.fillStyle = "#00ff44";
+    if (p.frogGlow) {
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = p.frogGlow;
+    }
+    ctx.fillStyle = p.frogBody;
     ctx.fillRect(fx + margin, fy + margin, size, size);
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = "transparent";
 
-    // Eyes based on lastDir
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = p.frogEyes;
     const eyeR = 4;
     let eye1x = fx + CELL / 2 - 7;
     let eye1y = fy + CELL / 2 - 7;
@@ -630,8 +829,7 @@ export function createEngine() {
     ctx.arc(eye2x, eye2y, eyeR, 0, Math.PI * 2);
     ctx.fill();
 
-    // Pupils
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = p.frogPupils;
     ctx.beginPath();
     ctx.arc(eye1x + 1, eye1y + 1, 2, 0, Math.PI * 2);
     ctx.fill();
@@ -640,23 +838,26 @@ export function createEngine() {
     ctx.fill();
   }
 
-  function drawTimerBar(ctx: CanvasRenderingContext2D) {
+  function drawTimerBar(ctx: CanvasRenderingContext2D, p: FroggerPalette) {
     const ratio = Math.max(0, timeLeft / TIME_LIMIT);
     const barW = CANVAS_W * ratio;
-    // Background
-    ctx.fillStyle = "#111";
+    ctx.fillStyle = p.timerBg;
     ctx.fillRect(0, 0, CANVAS_W, 6);
-    // Bar: green to red
-    const r = Math.floor(255 * (1 - ratio));
-    const g = Math.floor(255 * ratio);
-    ctx.fillStyle = `rgb(${r},${g},0)`;
+    const grad = ctx.createLinearGradient(0, 0, CANVAS_W, 0);
+    grad.addColorStop(0, p.timerFull);
+    grad.addColorStop(1, p.timerLow);
+    ctx.fillStyle = grad;
     ctx.fillRect(0, 0, barW, 6);
   }
 
-  function drawOverlay(ctx: CanvasRenderingContext2D, text: string) {
-    ctx.fillStyle = "rgba(0,0,0,0.65)";
+  function drawOverlay(
+    ctx: CanvasRenderingContext2D,
+    p: FroggerPalette,
+    text: string,
+  ) {
+    ctx.fillStyle = p.overlayBg;
     ctx.fillRect(0, CANVAS_H / 2 - 40, CANVAS_W, 80);
-    ctx.fillStyle = "#00ff44";
+    ctx.fillStyle = p.overlayText;
     ctx.font = "bold 28px 'Press Start 2P', monospace";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -666,40 +867,33 @@ export function createEngine() {
   }
 
   function draw(ctx: CanvasRenderingContext2D) {
-    // Use a timestamp trick for blink animations
+    const p = FROGGER_PALETTES[activeSkin];
     const ts = performance.now();
 
-    // 1. Row backgrounds
-    drawRowBackground(ctx);
+    drawRowBackground(ctx, p);
+    drawLaneMarkers(ctx, p);
+    drawPlatforms(ctx, p);
+    drawVehicles(ctx, p);
+    drawHomeBases(ctx, p);
+    drawFrog(ctx, p, ts);
 
-    // 2. Lane markers
-    drawLaneMarkers(ctx);
-
-    // 3. Platforms
-    drawPlatforms(ctx);
-
-    // 4. Vehicles
-    drawVehicles(ctx);
-
-    // 5. Home bases
-    drawHomeBases(ctx);
-
-    // 6. Frog
-    drawFrog(ctx, ts);
-
-    // 7. Timer bar
     if (phase === "playing" || phase === "dying") {
-      drawTimerBar(ctx);
+      drawTimerBar(ctx, p);
     }
 
-    // 8. Level complete overlay
     if (phase === "levelComplete") {
-      drawOverlay(ctx, `NIVEL ${level}`);
+      drawOverlay(ctx, p, `NIVEL ${level}`);
     }
 
-    // 9. Game over overlay
     if (phase === "gameover") {
-      drawOverlay(ctx, "GAME OVER");
+      drawOverlay(ctx, p, "GAME OVER");
+    }
+
+    if (p.scanlines) {
+      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      for (let sy = 0; sy < CANVAS_H; sy += 2) {
+        ctx.fillRect(0, sy, CANVAS_W, 1);
+      }
     }
   }
 
@@ -710,6 +904,7 @@ export function createEngine() {
     draw,
     forceGameOver,
     getSnapshot,
+    setSkin,
   };
 }
 
