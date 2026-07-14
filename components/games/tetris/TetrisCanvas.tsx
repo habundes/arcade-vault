@@ -1,18 +1,8 @@
 "use client";
 
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { createEngine, type Engine } from "./engine";
-import {
-  TouchDPad,
-  type DPadDirection,
-} from "@/components/games/shared/TouchDPad";
-import { TouchActionButton } from "@/components/games/shared/TouchActionButton";
+import type { DPadDirection } from "@/components/games/shared/TouchDPad";
 
 export type TetrisSnapshot = {
   score: number;
@@ -23,6 +13,8 @@ export type TetrisSnapshot = {
 
 export type TetrisCanvasHandle = {
   forceGameOver: () => void;
+  handleDirection: (dir: DPadDirection) => void;
+  handleDrop: () => void;
 };
 
 type TetrisCanvasProps = {
@@ -41,7 +33,6 @@ export const TetrisCanvas = forwardRef<TetrisCanvasHandle, TetrisCanvasProps>(
     const onSnapshotRef = useRef(onSnapshot);
     const onGameOverRef = useRef(onGameOver);
     const gameOverFiredRef = useRef(false);
-    const [isGameOver, setIsGameOver] = useState(false);
 
     pausedRef.current = paused;
     onSnapshotRef.current = onSnapshot;
@@ -50,6 +41,29 @@ export const TetrisCanvas = forwardRef<TetrisCanvasHandle, TetrisCanvasProps>(
     useImperativeHandle(ref, () => ({
       forceGameOver: () => {
         if (engineRef.current) engineRef.current.forceGameOver();
+      },
+      handleDirection: (dir: DPadDirection) => {
+        const engine = engineRef.current;
+        if (!engine || pausedRef.current || engine.state.gameOver) return;
+        switch (dir) {
+          case "LEFT":
+            engine.moveLeft();
+            break;
+          case "RIGHT":
+            engine.moveRight();
+            break;
+          case "DOWN":
+            engine.softDrop();
+            break;
+          case "UP":
+            engine.tryRotate();
+            break;
+        }
+      },
+      handleDrop: () => {
+        const engine = engineRef.current;
+        if (!engine || pausedRef.current || engine.state.gameOver) return;
+        engine.hardDrop();
       },
     }));
 
@@ -82,7 +96,6 @@ export const TetrisCanvas = forwardRef<TetrisCanvasHandle, TetrisCanvasProps>(
 
           if (gameOver && !gameOverFiredRef.current) {
             gameOverFiredRef.current = true;
-            setIsGameOver(true);
             onGameOverRef.current?.();
           }
         }
@@ -129,89 +142,46 @@ export const TetrisCanvas = forwardRef<TetrisCanvasHandle, TetrisCanvasProps>(
       if (!engineRef.current) return;
       engineRef.current.initGame();
       gameOverFiredRef.current = false;
-      setIsGameOver(false);
     }, [resetKey]);
 
-    const handleDirection = (dir: DPadDirection) => {
-      const engine = engineRef.current;
-      if (!engine || pausedRef.current || engine.state.gameOver) return;
-      switch (dir) {
-        case "LEFT":
-          engine.moveLeft();
-          break;
-        case "RIGHT":
-          engine.moveRight();
-          break;
-        case "DOWN":
-          engine.softDrop();
-          break;
-        case "UP":
-          engine.tryRotate();
-          break;
-      }
-    };
-
-    const handleDrop = () => {
-      const engine = engineRef.current;
-      if (!engine || pausedRef.current || engine.state.gameOver) return;
-      engine.hardDrop();
-    };
-
     return (
-      <>
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            alignItems: "flex-start",
-            justifyContent: "center",
-          }}
-        >
-          <canvas
-            ref={boardRef}
-            width={300}
-            height={600}
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "flex-start",
+          justifyContent: "center",
+          height: "100%",
+        }}
+      >
+        <canvas
+          ref={boardRef}
+          width={300}
+          height={600}
+          style={{ width: "100%", height: "100%", display: "block" }}
+        />
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div
             style={{
-              width: "auto",
-              height: "70vh",
-              maxHeight: "70vh",
-              display: "block",
+              fontSize: 10,
+              letterSpacing: "0.12em",
+              color: "var(--ink-dim)",
+              textTransform: "uppercase",
+            }}
+          >
+            Siguiente
+          </div>
+          <canvas
+            ref={previewRef}
+            width={120}
+            height={120}
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
             }}
           />
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div
-              style={{
-                fontSize: 10,
-                letterSpacing: "0.12em",
-                color: "var(--ink-dim)",
-                textTransform: "uppercase",
-              }}
-            >
-              Siguiente
-            </div>
-            <canvas
-              ref={previewRef}
-              width={120}
-              height={120}
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
-            />
-          </div>
         </div>
-        <div className="touch-controls">
-          <TouchDPad
-            onDirection={handleDirection}
-            disabled={paused || isGameOver}
-          />
-          <TouchActionButton
-            label="DROP"
-            onPress={handleDrop}
-            disabled={paused || isGameOver}
-          />
-        </div>
-      </>
+      </div>
     );
   },
 );

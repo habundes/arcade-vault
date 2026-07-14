@@ -30,6 +30,7 @@ import {
   type SnakeSnapshot,
 } from "@/components/games/snake/SnakeCanvas";
 import { TouchDPad } from "@/components/games/shared/TouchDPad";
+import { TouchActionButton } from "@/components/games/shared/TouchActionButton";
 
 const SKIN_LABELS: Record<Skin, string> = {
   clasico: "CLÁSICO",
@@ -229,12 +230,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       </div>
 
       <div className="crt">
-        <div
-          className="crt-screen"
-          style={
-            isTetris ? { aspectRatio: "unset", height: "auto" } : undefined
-          }
-        >
+        <div className="crt-screen">
           {isAsteroids ? (
             <div className="asteroids-arena">
               <AsteroidsCanvas
@@ -247,13 +243,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
           ) : isTetris ? (
             <div
               className="asteroids-arena"
-              style={{
-                position: "static",
-                aspectRatio: "unset",
-                height: "auto",
-                padding: "12px 8px",
-                flexDirection: "column",
-              }}
+              style={{ aspectRatio: "unset", padding: "12px 8px" }}
             >
               <TetrisCanvas
                 ref={tetrisRef}
@@ -338,6 +328,20 @@ export default function GamePlayer({ game }: { game: GameRow }) {
           onDirection={(dir) => snakeRef.current?.queueDirection(dir)}
           disabled={paused || over}
         />
+      )}
+
+      {isTetris && (
+        <div className="touch-controls">
+          <TouchDPad
+            onDirection={(dir) => tetrisRef.current?.handleDirection(dir)}
+            disabled={paused || over}
+          />
+          <TouchActionButton
+            label="DROP"
+            onPress={() => tetrisRef.current?.handleDrop()}
+            disabled={paused || over}
+          />
+        </div>
       )}
 
       {over && (
