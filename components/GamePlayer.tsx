@@ -29,6 +29,10 @@ import {
   type SnakeCanvasHandle,
   type SnakeSnapshot,
 } from "@/components/games/snake/SnakeCanvas";
+import FroggerCanvas, {
+  type FroggerHandle,
+  type FroggerSnapshot,
+} from "@/components/games/frogger/FroggerCanvas";
 import { TouchDPad } from "@/components/games/shared/TouchDPad";
 import { TouchActionButton } from "@/components/games/shared/TouchActionButton";
 
@@ -44,11 +48,13 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const isTetris = game.id === "tetris";
   const isArkanoid = game.id === "arkanoid";
   const isSnake = game.id === "snake";
+  const isFrogger = game.id === "frogger";
 
   const asteroidsRef = useRef<AsteroidsCanvasHandle>(null);
   const tetrisRef = useRef<TetrisCanvasHandle>(null);
   const arkanoidRef = useRef<ArkanoidCanvasHandle>(null);
   const snakeRef = useRef<SnakeCanvasHandle>(null);
+  const froggerRef = useRef<FroggerHandle>(null);
 
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -57,6 +63,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [tetrisResetKey, setTetrisResetKey] = useState(0);
   const [arkanoidResetKey, setArkanoidResetKey] = useState(0);
   const [snakeResetKey, setSnakeResetKey] = useState(0);
+  const [froggerTimeLeft, setFroggerTimeLeft] = useState(30);
   const [paused, setPaused] = useState(false);
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
@@ -78,13 +85,21 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   };
 
   const level =
-    isAsteroids || isTetris || isArkanoid || isSnake
+    isAsteroids || isTetris || isArkanoid || isSnake || isFrogger
       ? engineLevel
       : Math.floor(score / 2500) + 1;
 
   // fake score timer — skipped for engine-driven games
   useEffect(() => {
-    if (isAsteroids || isTetris || isArkanoid || isSnake || over || paused)
+    if (
+      isAsteroids ||
+      isTetris ||
+      isArkanoid ||
+      isSnake ||
+      isFrogger ||
+      over ||
+      paused
+    )
       return;
     const t = setInterval(
       () => setScore((s) => s + Math.floor(10 + Math.random() * 90)),
@@ -121,6 +136,14 @@ export default function GamePlayer({ game }: { game: GameRow }) {
     if (s.gameOver) setOver(true);
   }, []);
 
+  const handleFroggerSnapshot = useCallback((s: FroggerSnapshot) => {
+    setScore(s.score);
+    setLives(s.lives);
+    setEngineLevel(s.level);
+    setFroggerTimeLeft(s.timeLeft);
+    if (s.gameOver) setOver(true);
+  }, []);
+
   const endGame = () => {
     if (isAsteroids) {
       asteroidsRef.current?.forceGameOver();
@@ -131,6 +154,8 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       arkanoidRef.current?.forceGameOver();
     } else if (isSnake) {
       snakeRef.current?.forceGameOver();
+    } else if (isFrogger) {
+      froggerRef.current?.forceGameOver();
     } else {
       setOver(true);
     }
@@ -148,6 +173,10 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       setEngineLevel(1);
     } else if (isSnake) {
       setSnakeResetKey((k) => k + 1);
+      setEngineLevel(1);
+    } else if (isFrogger) {
+      froggerRef.current?.reset();
+      setFroggerTimeLeft(30);
       setEngineLevel(1);
     }
     setScore(0);
@@ -201,6 +230,19 @@ export default function GamePlayer({ game }: { game: GameRow }) {
             <div className="l">Nivel</div>
             <div className="v">{String(level).padStart(2, "0")}</div>
           </div>
+          {isFrogger && (
+            <div className="hud-stat">
+              <div className="l">Tiempo</div>
+              <div
+                className="v"
+                style={{
+                  color: froggerTimeLeft <= 10 ? "var(--magenta)" : undefined,
+                }}
+              >
+                {froggerTimeLeft}s
+              </div>
+            </div>
+          )}
         </div>
         <div className="hud-actions">
           {isAsteroids && (
@@ -281,6 +323,23 @@ export default function GamePlayer({ game }: { game: GameRow }) {
                 resetKey={snakeResetKey}
                 onSnapshot={handleSnakeSnapshot}
                 onGameOver={() => setOver(true)}
+              />
+            </div>
+          ) : isFrogger ? (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                height: "100%",
+                aspectRatio: "3/4",
+              }}
+            >
+              <FroggerCanvas
+                ref={froggerRef}
+                paused={paused}
+                onSnapshot={handleFroggerSnapshot}
               />
             </div>
           ) : (
