@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                                                        |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `14-controles-tactiles-tetris`                                                                                                                                               |
-| **Estado**               | `Approved`                                                                                                                                                                      |
+| **Estado**               | `Implemented`                                                                                                                                                                |
 | **Fecha**                | 2026-07-13                                                                                                                                                                   |
 | **Dependencias**         | SPEC 07 (juego Tetris), SPEC 13 (controles táctiles Snake — reutiliza `TouchDPad`)                                                                                           |
 | **Objetivo (una frase)** | Agregar controles táctiles a Tetris (D-pad reutilizado de la spec 13 + botón extra de DROP) para mover, rotar y caer piezas sin teclado en dispositivos con pantalla táctil. |
@@ -97,18 +97,18 @@ Cada paso deja la app compilando y navegable.
 
 ## 4 · Criterios de aceptación
 
-- [ ] `npm run build` y `npm run lint` terminan sin errores.
-- [ ] `components/games/shared/TouchActionButton.tsx` existe, es genérico (sin lógica de Tetris), y expone `label`, `onPress`, `disabled`.
-- [ ] En viewport < 768px, aparece la franja `.touch-controls` (D-pad + DROP) debajo del canvas de Tetris.
-- [ ] En viewport ≥ 768px, la franja `.touch-controls` no se muestra.
-- [ ] Tocar IZQUIERDA/DERECHA del D-pad mueve la pieza una columna por tap.
-- [ ] Tocar ABAJO hace soft-drop de una fila por tap.
-- [ ] Tocar ARRIBA rota la pieza (`tryRotate`).
-- [ ] Tocar DROP ejecuta hard-drop inmediato (`hardDrop`).
-- [ ] El teclado (flechas, Espacio, X) sigue funcionando exactamente igual que antes de este spec.
-- [ ] Los 5 controles táctiles (4 direcciones + DROP) se deshabilitan visualmente y no responden a taps cuando el juego está en pausa o en game over.
-- [ ] Los demás juegos del catálogo (asteroides, arkanoid, snake) y el HUD superior siguen sin cambios de comportamiento.
-- [ ] `TouchDPad` no fue modificado respecto a la spec 13.
+- [x] `npm run build` y `npm run lint` terminan sin errores.
+- [x] `components/games/shared/TouchActionButton.tsx` existe, es genérico (sin lógica de Tetris), y expone `label`, `onPress`, `disabled`.
+- [x] En viewport < 768px, aparece la franja `.touch-controls` (D-pad + DROP) debajo del canvas de Tetris.
+- [x] En viewport ≥ 768px, la franja `.touch-controls` no se muestra.
+- [x] Tocar IZQUIERDA/DERECHA del D-pad mueve la pieza una columna por tap.
+- [x] Tocar ABAJO hace soft-drop de una fila por tap.
+- [x] Tocar ARRIBA rota la pieza (`tryRotate`).
+- [x] Tocar DROP ejecuta hard-drop inmediato (`hardDrop`).
+- [x] El teclado (flechas, Espacio, X) sigue funcionando exactamente igual que antes de este spec.
+- [x] Los 5 controles táctiles (4 direcciones + DROP) se deshabilitan visualmente y no responden a taps cuando el juego está en pausa o en game over.
+- [x] Los demás juegos del catálogo (asteroides, arkanoid, snake) y el HUD superior siguen sin cambios de comportamiento.
+- [x] `TouchDPad` no fue modificado respecto a la spec 13.
 
 ---
 
