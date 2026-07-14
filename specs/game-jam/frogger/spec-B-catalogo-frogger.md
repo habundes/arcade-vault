@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                  |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
 | **Spec**                 | `frogger-catalogo`                                                                                                     |
-| **Estado**               | `Borrador`                                                                                                             |
+| **Estado**               | `Approved`                                                                                                             |
 | **Fecha**                | 2026-07-10                                                                                                             |
 | **Dependencias**         | spec-A-juego-frogger, SPEC 06                                                                                          |
 | **Objetivo (una frase)** | Insertar la fila `frogger` en la tabla `games` de Supabase para que aparezca en el catálogo y su leaderboard funcione. |
