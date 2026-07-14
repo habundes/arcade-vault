@@ -202,7 +202,7 @@ export function createEngine() {
     initLevel();
   }
 
-  function killFrog(_cause: string) {
+  function killFrog() {
     if (phase !== "playing") return;
     phase = "dying";
     frog.alive = false;
@@ -283,7 +283,7 @@ export function createEngine() {
         frog.rideOffset += plat.speed * (dtMs / 1000);
         const frogPixelX = frog.col * CELL + frog.rideOffset;
         if (frogPixelX < 0 || frogPixelX + CELL > CANVAS_W) {
-          killFrog("water");
+          killFrog();
           return;
         }
       }
@@ -293,7 +293,7 @@ export function createEngine() {
     timeLeft -= dtMs / 1000;
     if (timeLeft <= 0) {
       timeLeft = 0;
-      killFrog("timeout");
+      killFrog();
       return;
     }
 
@@ -306,7 +306,7 @@ export function createEngine() {
         const vLeft = v.x + 2;
         const vRight = v.x + v.widthPx - 2;
         if (frogLeft < vRight && frogRight > vLeft) {
-          killFrog("car");
+          killFrog();
           return;
         }
       }
@@ -316,11 +316,11 @@ export function createEngine() {
     if (isInRiverRow(frog.row) && frog.alive) {
       const plat = findPlatformUnder();
       if (!plat) {
-        killFrog("water");
+        killFrog();
         return;
       }
       if (plat.submerged) {
-        killFrog("water");
+        killFrog();
         return;
       }
     }
@@ -339,7 +339,7 @@ export function createEngine() {
         checkLevelComplete();
       } else {
         // Landed in water between bases or on an already-occupied base
-        killFrog("water");
+        killFrog();
       }
     }
   }

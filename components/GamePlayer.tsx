@@ -106,7 +106,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
       220,
     );
     return () => clearInterval(t);
-  }, [isAsteroids, isTetris, isArkanoid, isSnake, over, paused]);
+  }, [isAsteroids, isTetris, isArkanoid, isSnake, isFrogger, over, paused]);
 
   const handleAsteroidsSnapshot = useCallback((s: AsteroidsSnapshot) => {
     setScore(s.score);
