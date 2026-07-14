@@ -2,6 +2,7 @@
 
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { createEngine, type Engine } from "./engine";
+import type { DPadDirection } from "@/components/games/shared/TouchDPad";
 
 export type TetrisSnapshot = {
   score: number;
@@ -12,6 +13,8 @@ export type TetrisSnapshot = {
 
 export type TetrisCanvasHandle = {
   forceGameOver: () => void;
+  handleDirection: (dir: DPadDirection) => void;
+  handleDrop: () => void;
 };
 
 type TetrisCanvasProps = {
@@ -38,6 +41,29 @@ export const TetrisCanvas = forwardRef<TetrisCanvasHandle, TetrisCanvasProps>(
     useImperativeHandle(ref, () => ({
       forceGameOver: () => {
         if (engineRef.current) engineRef.current.forceGameOver();
+      },
+      handleDirection: (dir: DPadDirection) => {
+        const engine = engineRef.current;
+        if (!engine || pausedRef.current || engine.state.gameOver) return;
+        switch (dir) {
+          case "LEFT":
+            engine.moveLeft();
+            break;
+          case "RIGHT":
+            engine.moveRight();
+            break;
+          case "DOWN":
+            engine.softDrop();
+            break;
+          case "UP":
+            engine.tryRotate();
+            break;
+        }
+      },
+      handleDrop: () => {
+        const engine = engineRef.current;
+        if (!engine || pausedRef.current || engine.state.gameOver) return;
+        engine.hardDrop();
       },
     }));
 
