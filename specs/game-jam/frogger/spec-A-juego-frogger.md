@@ -3,7 +3,7 @@
 | Campo                    | Valor                                                                                                                                                                                      |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Spec**                 | `frogger-juego`                                                                                                                                                                            |
-| **Estado**               | `Borrador`                                                                                                                                                                                 |
+| **Estado**               | `Implemented`                                                                                                                                                                              |
 | **Fecha**                | 2026-07-10                                                                                                                                                                                 |
 | **Dependencias**         | SPEC 06 (leaderboard y catálogo en Supabase)                                                                                                                                               |
 | **Objetivo (una frase)** | Construir el juego FROGGER como componente canvas de React, añadirlo al catálogo como "frogger" e integrarlo en GamePlayer con HUD real (score/vidas/nivel/timer) y controles funcionales. |

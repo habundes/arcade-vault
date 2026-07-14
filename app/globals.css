@@ -937,6 +937,43 @@ a {
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
+.cover-frogger {
+  background: linear-gradient(
+    to bottom,
+    #001428 0%,
+    #002a50 25%,
+    #0a1f0a 25%,
+    #0a1f0a 35%,
+    #1a0028 35%,
+    #2d0047 70%,
+    #0a1f0a 70%,
+    #0a1f0a 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+.cover-frogger::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 38px,
+    rgba(255, 0, 255, 0.12) 38px,
+    rgba(255, 0, 255, 0.12) 40px
+  );
+}
+.cover-frogger::after {
+  content: "🐸";
+  position: absolute;
+  font-size: 3rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 8px #00ff88);
+}
+
 /* ===== detail screen ===== */
 .av-detail {
   display: grid;
