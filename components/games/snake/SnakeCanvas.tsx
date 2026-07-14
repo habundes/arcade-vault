@@ -1,11 +1,18 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import {
   createEngine,
   CANVAS_SIZE,
   CELL_SIZE,
   FRUIT_SPRITES,
+  type Direction,
   type SnakeSnapshot,
 } from "./engine";
 
@@ -13,6 +20,7 @@ export type { SnakeSnapshot };
 
 export type SnakeCanvasHandle = {
   forceGameOver: () => void;
+  queueDirection: (dir: Direction) => void;
 };
 
 type SnakeCanvasProps = {
@@ -139,8 +147,15 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
     onSnapshotRef.current = onSnapshot;
     onGameOverRef.current = onGameOver;
 
+    // Función compartida por el teclado y el D-pad táctil para encolar
+    // el próximo cambio de dirección (el motor ya evita el giro de 180°).
+    const queueDirection = useCallback((dir: Direction) => {
+      engineRef.current?.setDirection(dir);
+    }, []);
+
     useImperativeHandle(ref, () => ({
       forceGameOver: () => engineRef.current?.forceGameOver(),
+      queueDirection,
     }));
 
     // Single RAF loop — mount only. Pause is controlled via pausedRef.
@@ -207,25 +222,25 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
           case "w":
           case "W":
             e.preventDefault();
-            engine.setDirection("UP");
+            queueDirection("UP");
             break;
           case "ArrowDown":
           case "s":
           case "S":
             e.preventDefault();
-            engine.setDirection("DOWN");
+            queueDirection("DOWN");
             break;
           case "ArrowLeft":
           case "a":
           case "A":
             e.preventDefault();
-            engine.setDirection("LEFT");
+            queueDirection("LEFT");
             break;
           case "ArrowRight":
           case "d":
           case "D":
             e.preventDefault();
-            engine.setDirection("RIGHT");
+            queueDirection("RIGHT");
             break;
         }
       };
@@ -239,7 +254,7 @@ export const SnakeCanvas = forwardRef<SnakeCanvasHandle, SnakeCanvasProps>(
         imgRef.current = null;
         img.onload = null;
       };
-    }, []);
+    }, [queueDirection]);
 
     // resetKey: reinicia motor y limpia acumulado
     useEffect(() => {
