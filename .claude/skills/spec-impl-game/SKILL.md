@@ -222,14 +222,53 @@ After Phase 4 is fully complete (spec marked as Implemented, final commit done):
    y escribe specs/skins/spec-skins-[game-id].md y actualiza references/skin-registry.md.
    ```
 
-4. **Wait for skin-designer to complete.** Once the agent returns, show the final summary:
+4. **Wait for skin-designer to complete.** Once the agent returns, announce Phase 6:
+
+   ```
+   🎨 Skin spec written at specs/skins/spec-skins-[game-id].md
+
+   Moving to Phase 6 — skin implementation.
+   ```
+
+---
+
+### Phase 6 — Approve and implement the skin spec
+
+1. Read the skin spec file `specs/skins/spec-skins-[game-id].md` and show the user a brief summary:
+   - The three skins defined (neon, retro, clasico).
+   - The color palettes for each skin.
+
+2. Ask for explicit approval before implementing:
+
+   ```
+   ¿Apruebas la skin spec para [game-id]? (sí / no)
+   Si quieres ajustar algo, edita specs/skins/spec-skins-[game-id].md primero y luego responde "sí".
+   ```
+
+   - If the user answers **no** or requests changes: stop. Show:
+
+     ```
+     ⏸️ Skin implementation paused.
+     Edit specs/skins/spec-skins-[game-id].md, then run /spec-impl-game again or confirm here when ready.
+     ```
+
+     Do not implement anything.
+
+   - If the user answers **yes** (or equivalent): continue to step 3.
+
+3. Implement the skin spec following the same rhythm as Phase 4 — one step at a time, pausing for review after each one. The implementation must:
+   - Apply the **neon**, **retro**, and **clasico** palettes to the game's canvas/CSS using the approach defined in the skin spec (CSS custom properties, canvas color maps, or equivalent).
+   - Not alter game logic — only visual/color concerns.
+   - Follow the spec strictly; note deviations as observations but do not improvise.
+
+4. When all skin steps are complete, update the skin spec's state to `Implementado` (or the language equivalent), commit, and show the final summary:
 
    ```
    ✅ /spec-impl-game complete.
 
    Spec:          specs/[spec-file]  →  Implemented
    Branch:        spec-NN-slug
-   Skins spec:    specs/skins/spec-skins-[game-id].md  (Borrador)
+   Skins spec:    specs/skins/spec-skins-[game-id].md  →  Implemented
    Skin registry: references/skin-registry.md  (updated)
    ```
 
