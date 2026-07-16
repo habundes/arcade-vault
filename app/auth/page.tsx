@@ -6,15 +6,19 @@ import { useAuth } from "@/app/providers/auth-provider";
 
 export default function AuthPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { signInWithPassword, signUp } = useAuth();
   const [tab, setTab] = useState<"in" | "up">("in");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [email, setEmail] = useState("");
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login({ name: (user || "PLAYER1").toUpperCase().slice(0, 10) });
+    if (tab === "up") {
+      await signUp(email, pass, user || "PLAYER1");
+    } else {
+      await signInWithPassword(email, pass);
+    }
     router.push("/games");
   };
 
