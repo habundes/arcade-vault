@@ -54,9 +54,14 @@ export default function Nav() {
           <span>CRÉDITOS · 03</span>
         </div>
         {user ? (
-          <button className="btn ghost auth-btn" onClick={handleSignOut}>
-            {user.name} ▾
-          </button>
+          <>
+            <div className="user-chip">
+              <span className="user-name">{user.name}</span>
+            </div>
+            <button className="btn ghost auth-btn" onClick={handleSignOut}>
+              Cerrar Sesión
+            </button>
+          </>
         ) : (
           <Link href="/auth" className="btn auth-btn">
             Iniciar Sesión
@@ -91,10 +96,32 @@ export default function Nav() {
         <Link href="/about" className={isAbout ? "active" : ""} onClick={close}>
           Acerca de
         </Link>
-        <Link href="/auth" className={isAuth ? "active" : ""} onClick={close}>
-          {user ? "Cuenta" : "Iniciar Sesión"}
-        </Link>
+        {!user && (
+          <Link href="/auth" className={isAuth ? "active" : ""} onClick={close}>
+            Iniciar Sesión
+          </Link>
+        )}
         <div style={{ flex: 1 }}></div>
+        {user && (
+          <>
+            <div
+              className="pixel neon-magenta"
+              style={{ fontSize: 10, marginBottom: 8, textAlign: "center" }}
+            >
+              {user.name}
+            </div>
+            <button
+              className="btn ghost"
+              style={{ width: "100%", marginBottom: 12 }}
+              onClick={() => {
+                close();
+                handleSignOut();
+              }}
+            >
+              Cerrar Sesión
+            </button>
+          </>
+        )}
         <div
           className="pixel"
           style={{ fontSize: 9, color: "var(--ink-faint)", letterSpacing: "0.16em" }}

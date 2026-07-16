@@ -290,6 +290,16 @@ a {
 .av-nav .auth-btn {
   margin-left: 16px;
 }
+.av-nav .user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+}
 .av-nav .hamburger {
   display: none;
 }
@@ -302,6 +312,12 @@ a {
     display: none;
   }
   .av-nav .coin-counter {
+    display: none;
+  }
+  .av-nav .user-chip {
+    display: none;
+  }
+  .av-nav .auth-btn {
     display: none;
   }
   .av-nav .hamburger {
