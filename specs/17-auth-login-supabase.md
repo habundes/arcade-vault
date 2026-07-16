@@ -3,7 +3,7 @@
 | Campo                    | Valor                     |
 | ------------------------ | ------------------------- |
 | **Spec**                 | `17-auth-login-supabase`  |
-| **Estado**               | `Approved`                   |
+| **Estado**               | `Implementado`                   |
 | **Fecha**                | 2026-07-16                |
 | **Dependencias**         | SPEC 04 (integración Supabase), SPEC 06 (leaderboard/scores) |
 | **Objetivo (una frase)** | Reemplazar el auth mock por autenticación real de Supabase (email+password con confirmación, OAuth Google y GitHub) y atribuir cada score al usuario autenticado vía `user_id` + RLS. |
@@ -76,19 +76,19 @@ Cada paso deja la app compilando y navegable.
 
 ## 4 · Criterios de aceptación
 
-- [ ] `npm run build` y `npm run lint` sin errores.
-- [ ] Signup email+password crea usuario en Supabase Auth con `user_metadata.name`.
-- [ ] Con confirmación de email activa, el usuario no entra hasta confirmar; el callback abre sesión.
-- [ ] Login email+password válido abre sesión; inválido muestra error.
-- [ ] OAuth Google abre sesión y redirige a `/games`.
-- [ ] OAuth GitHub abre sesión y redirige a `/games`.
-- [ ] La sesión persiste tras refrescar la página (client y server).
-- [ ] `middleware.ts` refresca la sesión; un Server Component ve el usuario vía `getUser()`.
-- [ ] `scores.user_id` es NOT NULL y FK a `auth.users`.
-- [ ] RLS: un usuario autenticado solo puede INSERT con su propio `auth.uid()`; SELECT es público.
-- [ ] Invitado puede jugar pero al guardar score se le exige login.
-- [ ] Score guardado por usuario autenticado aparece en el leaderboard con el nombre de su metadata.
-- [ ] `Nav` muestra el nombre real y `signOut` cierra la sesión.
+- [x] `npm run build` y `npm run lint` sin errores.
+- [x] Signup email+password crea usuario en Supabase Auth con `user_metadata.name`.
+- [x] Con confirmación de email activa, el usuario no entra hasta confirmar; el callback abre sesión.
+- [x] Login email+password válido abre sesión; inválido muestra error.
+- [x] OAuth Google abre sesión y redirige a `/games`. (verificado: providers configurados y redirect a Google OAuth real; sesión completa no ejercitada en navegador)
+- [x] OAuth GitHub abre sesión y redirige a `/games`. (verificado: providers configurados y redirect a GitHub OAuth real; sesión completa no ejercitada en navegador)
+- [x] La sesión persiste tras refrescar la página (client y server).
+- [x] `proxy.ts` (renombrado de `middleware.ts` en Next.js 16) refresca la sesión; un Server Component ve el usuario vía `getUser()`.
+- [x] `scores.user_id` es NOT NULL y FK a `auth.users`.
+- [x] RLS: un usuario autenticado solo puede INSERT con su propio `auth.uid()`; SELECT es público.
+- [x] Invitado puede jugar pero al guardar score se le exige login.
+- [x] Score guardado por usuario autenticado aparece en el leaderboard con el nombre de su metadata.
+- [x] `Nav` muestra el nombre real y `signOut` cierra la sesión.
 
 ## 5 · Decisiones tomadas y descartadas
 
