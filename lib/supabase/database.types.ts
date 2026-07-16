@@ -52,6 +52,7 @@ export type Database = {
           played_at: string;
           player_name: string;
           score: number;
+          user_id: string;
         };
         Insert: {
           game_id: string;
@@ -59,6 +60,7 @@ export type Database = {
           played_at?: string;
           player_name: string;
           score: number;
+          user_id: string;
         };
         Update: {
           game_id?: string;
@@ -66,6 +68,7 @@ export type Database = {
           played_at?: string;
           player_name?: string;
           score?: number;
+          user_id?: string;
         };
         Relationships: [
           {
