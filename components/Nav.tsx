@@ -20,8 +20,8 @@ export default function Nav() {
 
   const close = () => setOpen(false);
 
-  const handleSignOut = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut();
     router.push("/");
   };
 
