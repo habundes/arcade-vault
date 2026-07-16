@@ -112,9 +112,10 @@ export async function insertScore(
   gameId: string,
   playerName: string,
   score: number,
+  userId: string,
 ): Promise<void> {
   const { error } = await client
     .from("scores")
-    .insert({ game_id: gameId, player_name: playerName, score });
+    .insert({ game_id: gameId, player_name: playerName, score, user_id: userId });
   if (error) throw error;
 }

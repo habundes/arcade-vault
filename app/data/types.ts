@@ -29,5 +29,6 @@ export interface ScoreRow {
 }
 
 export interface User {
+  id: string;
   name: string; // iniciales/alias en mayúsculas, máx 10
 }
