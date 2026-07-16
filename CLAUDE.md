@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Arcade Vault — online gaming platform where users compete for the highest points score. Built with Spec Driven Design: specs live in `/spec`, implementation follows `spec-impl` methodology from the skills added via `npx skills@latest add Klerith/fernando-skills`.
+Arcade Vault — online gaming platform where users compete for the highest points score. Built with Spec Driven Design: specs live in `specs/`.
 
 ## Tech Stack
 
@@ -25,9 +25,9 @@ Arcade Vault — online gaming platform where users compete for the highest poin
 
 ## Agents
 
-- **`game-planner`** — subagente que planifica y decide qué juego nuevo encaja con el catálogo. Mantiene memoria de sugerencias en `references/game-suggestion-todo.md` (para no repetir) y entrega una recomendación con el Bloque 1 de `/add-game` pre-respondido. Solo asesora; no escribe código ni specs. Vive en `.claude/agents/game-planner.md`. Usalo cunado el usuario pregunte que juego sigue o pida ideas.
-- **`game-jam`** — subagente que recibe el **tema de un juego** y genera al menos 2 specs completos en `specs/game-jam/[game-id]/`: `spec-A-juego-[game-id].md` (motor + canvas, mismo formato que asteroides/tetris) y `spec-B-catalogo-[game-id].md` (INSERT SQL para Supabase). Si el juego requiere specs adicionales (assets, sonidos) los agrega como `spec-C-...`. Vive en `.claude/agents/game-jam.md`. Úsalo cuando el usuario dé un tema y quiera diseñar los specs de ese juego.
-- **`skin-designer`** — subagente que crea las 3 skins obligatorias (**neon**, **retro** y **clasico**/default) para un juego —**nuevo o existente**— verificando que cada una luzca bien en **modo oscuro**. Para un juego existente puede **leer** su engine/canvas pero **nunca lo modifica**: solo entrega specs. Genera el spec de skins en `specs/skins/spec-skins-[game-id].md` y registra el juego en `references/skin-registry.md`. Solo asesora; escribe únicamente `.md`, nunca código. Vive en `.claude/agents/skin-designer.md`. Úsalo cuando necesites definir las skins de un juego, sea nuevo o ya implementado.
+- **`game-planner`** — decide qué juego nuevo encaja con el catálogo; entrega recomendación con Bloque 1 de `/add-game` pre-respondido. Ver [`.claude/agents/game-planner.md`](.claude/agents/game-planner.md).
+- **`game-jam`** — recibe tema de juego y genera specs completos en `specs/game-jam/[game-id]/`. Ver [`.claude/agents/game-jam.md`](.claude/agents/game-jam.md).
+- **`skin-designer`** — crea las 3 skins obligatorias (neon, retro, clasico) para cualquier juego; solo escribe `.md`. Ver [`.claude/agents/skin-designer.md`](.claude/agents/skin-designer.md).
 
 ## Architecture
 
@@ -56,12 +56,14 @@ Uses the **App Router** (`app/` directory). Prefer Server Components by default;
 
 ### Games
 
-Four playable games: **asteroides, tetris, arkanoid, snake**. Each lives in `components/games/<slug>/` as two files:
+Five playable games: **asteroides, tetris, arkanoid, snake, frogger**. Each lives in `components/games/<slug>/` as two files:
 
 - `engine.ts` — pure TS game engine (state, physics, `update()`, exports a `<Slug>Snapshot` type).
 - `<Slug>Canvas.tsx` — client component rendering the engine to `<canvas>`; forwards a ref handle (`reset()`, `forceGameOver()`) and reports state via an `onSnapshot` callback.
 
-`components/GamePlayer.tsx` is the shared player shell: branches by `game.id`, owns the HUD (score/lives/level/pause/end), and calls `insertScore()` on save. To wire a new game, add its branch here. Games not backed by an engine fall back to a decorative fake-score arena.
+`components/games/shared/` holds reusable touch controls: `TouchDPad.tsx` (directional pad) and `TouchActionButton.tsx`.
+
+`components/GamePlayer.tsx` is the shared player shell: branches by `game.id` (asteroides, tetris, arkanoid, snake, frogger — frogger adds a countdown timer HUD), owns the HUD (score/lives/level/pause/end), and calls `insertScore()` on save. To wire a new game, add its branch here. Games not backed by an engine fall back to a decorative fake-score arena.
 
 `app/globals.css` holds all styling incl. per-game `.cover-<slug>` cover-art classes.
 
