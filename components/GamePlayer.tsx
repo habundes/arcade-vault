@@ -66,7 +66,7 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   const [froggerTimeLeft, setFroggerTimeLeft] = useState(30);
   const [paused, setPaused] = useState(false);
   const [over, setOver] = useState(false);
-  const [name, setName] = useState(user ? user.name : "INVITADO");
+  const name = user ? user.name : "INVITADO";
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -188,11 +188,12 @@ export default function GamePlayer({ game }: { game: GameRow }) {
   };
 
   const handleSave = async () => {
+    if (!user) return;
     setSaving(true);
     setSaveError(null);
     try {
       const supabase = createClient();
-      await insertScore(supabase, game.id, name, score);
+      await insertScore(supabase, game.id, user.name, score, user.id);
       setSaved(true);
     } catch {
       setSaveError("No se pudo guardar la puntuación. Intenta de nuevo.");
@@ -410,15 +411,16 @@ export default function GamePlayer({ game }: { game: GameRow }) {
             <h2>FIN DEL JUEGO</h2>
             <div className="final-label">PUNTUACIÓN FINAL</div>
             <div className="final">{score.toLocaleString("es-ES")}</div>
-            {!saved ? (
+            {saved ? (
+              <div className="toast-saved">▸ PUNTUACIÓN GUARDADA_</div>
+            ) : user ? (
               <div className="input-row">
-                <input
-                  value={name}
-                  onChange={(e) =>
-                    setName(e.target.value.toUpperCase().slice(0, 10))
-                  }
-                  placeholder="TUS INICIALES"
-                />
+                <div className="hud-stat" style={{ flex: 1 }}>
+                  <div className="l">Jugador</div>
+                  <div className="v" style={{ color: "var(--ink)" }}>
+                    {user.name}
+                  </div>
+                </div>
                 <button
                   className="btn yellow"
                   onClick={handleSave}
@@ -428,7 +430,14 @@ export default function GamePlayer({ game }: { game: GameRow }) {
                 </button>
               </div>
             ) : (
-              <div className="toast-saved">▸ PUNTUACIÓN GUARDADA_</div>
+              <div className="input-row">
+                <div className="mono" style={{ fontSize: 12, color: "var(--ink-dim)" }}>
+                  Inicia sesión para guardar tu puntuación.
+                </div>
+                <Link href="/auth" className="btn yellow">
+                  INICIAR SESIÓN
+                </Link>
+              </div>
             )}
             {saveError && (
               <div

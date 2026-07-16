@@ -4,22 +4,58 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
 
+function friendlyAuthError(message: string): string {
+  if (/email not confirmed/i.test(message)) {
+    return "Confirma tu correo antes de entrar. Revisa tu bandeja de entrada.";
+  }
+  if (/invalid login credentials/i.test(message)) {
+    return "Usuario o contraseña incorrectos.";
+  }
+  if (/user already registered/i.test(message)) {
+    return "Ya existe una cuenta con ese correo.";
+  }
+  return message;
+}
+
 export default function AuthPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { signInWithPassword, signUp, signInWithOAuth } = useAuth();
   const [tab, setTab] = useState<"in" | "up">("in");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login({ name: (user || "PLAYER1").toUpperCase().slice(0, 10) });
-    router.push("/games");
+    setError(null);
+    setPending(true);
+    try {
+      if (tab === "up") {
+        await signUp(email, pass, user || "PLAYER1");
+      } else {
+        await signInWithPassword(email, pass);
+      }
+      router.push("/games");
+    } catch (err) {
+      setError(friendlyAuthError((err as Error).message));
+    } finally {
+      setPending(false);
+    }
   };
 
   const playAsGuest = () => {
     router.push("/games");
+  };
+
+  const oauth = async (provider: "google" | "github") => {
+    setError(null);
+    try {
+      await signInWithOAuth(provider);
+    } catch (err) {
+      setError(friendlyAuthError((err as Error).message));
+    }
   };
 
   return (
@@ -37,30 +73,43 @@ export default function AuthPage() {
         </div>
 
         <div className="auth-tabs">
-          <button className={tab === "in" ? "on" : ""} onClick={() => setTab("in")}>
+          <button
+            className={tab === "in" ? "on" : ""}
+            onClick={() => {
+              setTab("in");
+              setError(null);
+            }}
+          >
             INICIAR SESIÓN
           </button>
-          <button className={tab === "up" ? "on" : ""} onClick={() => setTab("up")}>
+          <button
+            className={tab === "up" ? "on" : ""}
+            onClick={() => {
+              setTab("up");
+              setError(null);
+            }}
+          >
             CREAR CUENTA
           </button>
         </div>
 
         <form onSubmit={submit}>
-          <div className="field">
-            <label>Usuario</label>
-            <input value={user} onChange={(e) => setUser(e.target.value)} placeholder="px_kai" />
-          </div>
           {tab === "up" && (
             <div className="field slide-in">
-              <label>Correo electrónico</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="jugador@vault.gg"
-              />
+              <label>Usuario</label>
+              <input value={user} onChange={(e) => setUser(e.target.value)} placeholder="px_kai" />
             </div>
           )}
+          <div className="field">
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="jugador@vault.gg"
+              required
+            />
+          </div>
           <div className="field">
             <label>Contraseña</label>
             <input
@@ -68,11 +117,23 @@ export default function AuthPage() {
               value={pass}
               onChange={(e) => setPass(e.target.value)}
               placeholder="••••••••"
+              required
             />
           </div>
 
-          <button className="btn lg" type="submit" style={{ width: "100%", marginTop: 8 }}>
-            {tab === "in" ? "ENTRAR AL VAULT" : "CREAR Y JUGAR"}
+          {error && (
+            <div className="mono" style={{ color: "var(--magenta)", fontSize: 12, marginTop: 8 }}>
+              {error}
+            </div>
+          )}
+
+          <button
+            className="btn lg"
+            type="submit"
+            disabled={pending}
+            style={{ width: "100%", marginTop: 8 }}
+          >
+            {pending ? "…" : tab === "in" ? "ENTRAR AL VAULT" : "CREAR Y JUGAR"}
           </button>
         </form>
 
@@ -82,10 +143,10 @@ export default function AuthPage() {
 
         <div className="auth-divider">O CONTINÚA CON</div>
         <div className="social">
-          <button className="btn ghost" type="button">
+          <button className="btn ghost" type="button" onClick={() => oauth("google")}>
             ◆ GOOGLE
           </button>
-          <button className="btn ghost" type="button">
+          <button className="btn ghost" type="button" onClick={() => oauth("github")}>
             ▣ GITHUB
           </button>
         </div>
