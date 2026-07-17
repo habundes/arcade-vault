@@ -3,7 +3,7 @@
 | Campo                    | Valor                     |
 | ------------------------ | ------------------------- |
 | **Spec**                 | `18-hardening-seguridad`  |
-| **Estado**               | `Approved`                   |
+| **Estado**               | `Implementado`               |
 | **Fecha**                | 2026-07-16                |
 | **Dependencias**         | SPEC 04 (integración Supabase), SPEC 17 (auth/RLS) |
 | **Objetivo (una frase)** | Aplicar las medidas del checklist de seguridad —headers HTTP en Next.js, eliminación de la función `SECURITY DEFINER` expuesta, y endurecimiento de Auth (leaked-password, min-length, complejidad, signup-rate) con validación de password en el UI— dejando los advisors de Supabase sin warnings. |
@@ -52,16 +52,16 @@ Cada paso deja la app compilando y navegable.
 
 ## 5 · Criterios de aceptación
 
-- [ ] La respuesta HTTP incluye `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`.
-- [ ] `npm run build` y `npm run lint` sin errores.
-- [ ] `get_advisors(security)` NO lista `anon_security_definer_function_executable` ni `authenticated_security_definer_function_executable`.
+- [x] La respuesta HTTP incluye `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`.
+- [x] `npm run build` y `npm run lint` sin errores.
+- [x] `get_advisors(security)` NO lista `anon_security_definer_function_executable` ni `authenticated_security_definer_function_executable`.
 - [ ] ~~`get_advisors(security)` NO lista `auth_leaked_password_protection`.~~ **N/A** — requiere plan pago de Supabase, no disponible en plan free del proyecto (ver Riesgos §7).
-- [ ] RLS activo en `games` y `scores` con las policies verificadas.
-- [ ] Signup con password < 8 chars rechazado por Supabase.
-- [ ] Signup con password sin minúscula/mayúscula/dígito/símbolo rechazado por Supabase.
-- [ ] UI de signup: password que no cumple `PASSWORD_REGEX` muestra error inline y NO envía request de auth.
-- [ ] UI de signup: password válido pasa la validación local y procede al `signUp`.
-- [ ] Signups masivos desde una IP limitados (rate limit configurado).
+- [x] RLS activo en `games` y `scores` con las policies verificadas.
+- [x] Signup con password < 8 chars rechazado por Supabase.
+- [x] Signup con password sin minúscula/mayúscula/dígito/símbolo rechazado por Supabase.
+- [x] UI de signup: password que no cumple `PASSWORD_REGEX` muestra error inline y NO envía request de auth.
+- [x] UI de signup: password válido pasa la validación local y procede al `signUp`.
+- [x] Signups masivos desde una IP limitados (rate limit configurado).
 
 ## 6 · Decisiones tomadas y descartadas
 
