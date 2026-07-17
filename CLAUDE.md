@@ -28,6 +28,7 @@ Arcade Vault — online gaming platform where users compete for the highest poin
 - **`game-planner`** — decide qué juego nuevo encaja con el catálogo; entrega recomendación con Bloque 1 de `/add-game` pre-respondido. Ver [`.claude/agents/game-planner.md`](.claude/agents/game-planner.md).
 - **`game-jam`** — recibe tema de juego y genera specs completos en `specs/game-jam/[game-id]/`. Ver [`.claude/agents/game-jam.md`](.claude/agents/game-jam.md).
 - **`skin-designer`** — crea las 3 skins obligatorias (neon, retro, clasico) para cualquier juego; solo escribe `.md`. Ver [`.claude/agents/skin-designer.md`](.claude/agents/skin-designer.md).
+- **`security-auditor`** — audita seguridad de la DB (Supabase/RLS vía MCP read-only) y de la app (headers, auth, integridad de scores); reporta por severidad y mantiene `references/security-audit.md`. Solo audita, no aplica fixes. Ver [`.claude/agents/security-auditor.md`](.claude/agents/security-auditor.md).
 
 ## Architecture
 

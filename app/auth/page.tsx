@@ -4,6 +4,10 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
 
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+const PASSWORD_RULES_MESSAGE =
+  "La contraseña debe tener mínimo 8 caracteres, con mayúscula, minúscula, dígito y símbolo.";
+
 function friendlyAuthError(message: string): string {
   if (/email not confirmed/i.test(message)) {
     return "Confirma tu correo antes de entrar. Revisa tu bandeja de entrada.";
@@ -33,6 +37,11 @@ export default function AuthPage() {
     setPending(true);
     try {
       if (tab === "up") {
+        if (!PASSWORD_REGEX.test(pass)) {
+          setError(PASSWORD_RULES_MESSAGE);
+          setPending(false);
+          return;
+        }
         await signUp(email, pass, user || "PLAYER1");
       } else {
         await signInWithPassword(email, pass);
