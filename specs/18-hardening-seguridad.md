@@ -55,7 +55,7 @@ Cada paso deja la app compilando y navegable.
 - [ ] La respuesta HTTP incluye `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`.
 - [ ] `npm run build` y `npm run lint` sin errores.
 - [ ] `get_advisors(security)` NO lista `anon_security_definer_function_executable` ni `authenticated_security_definer_function_executable`.
-- [ ] `get_advisors(security)` NO lista `auth_leaked_password_protection`.
+- [ ] ~~`get_advisors(security)` NO lista `auth_leaked_password_protection`.~~ **N/A** — requiere plan pago de Supabase, no disponible en plan free del proyecto (ver Riesgos §7).
 - [ ] RLS activo en `games` y `scores` con las policies verificadas.
 - [ ] Signup con password < 8 chars rechazado por Supabase.
 - [ ] Signup con password sin minúscula/mayúscula/dígito/símbolo rechazado por Supabase.
@@ -81,3 +81,4 @@ Cada paso deja la app compilando y navegable.
 | Config de Auth manual no versionada en git | Documentada en esta spec + verificación con `get_advisors` tras aplicar. |
 | DROP de función con dependencia oculta | `grep` confirma sin usos; `if exists` evita fallo si ya no existe. |
 | Regex de cliente desincronizado con la config de Supabase | `PASSWORD_REGEX` como única fuente y espejo exacto del dashboard; el servidor valida siempre. |
+| `auth_leaked_password_protection` requiere plan pago de Supabase (no disponible en plan free del proyecto) | Fuera de alcance técnico aplicar el toggle; warning aceptado como limitación de plan. Min-length 8, complejidad y rate-limit signup sí aplicados. `PASSWORD_REGEX` en cliente sigue siendo la barrera de complejidad principal. |
